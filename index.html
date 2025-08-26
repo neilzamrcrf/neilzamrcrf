@@ -555,7 +555,7 @@
         const idText=`GRUPO-${selectedGroup}-${animalName}-${generatedId}`;
         navigator.clipboard.writeText(idText);
         const message=encodeURIComponent(`Olá, gostaria de reservar o grupo ${selectedGroup} (${animalName})\nMeu ID de confirmação é: ${idText}\n\nChave PIX para pagamento e email:\n${config.pixKey}\n\naguardando o comprovante mande aqui pelo whatsapp: mais embaixo está site pra acompanhar rifa on-line 
-https://mariamrcrf.github.io/mariamrcrf/`);
+https://neilzamrcrf.github.io/neilzamrcrf/`);
         window.open(`https://wa.me/${config.whatsappNumber}?text=${message}`,'_blank');
         document.getElementById("confirmationSection").style.display="none";
         selectedGroup=null;
