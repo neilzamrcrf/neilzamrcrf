@@ -3,78 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>marcos tv online</title>
+  <title>Marcos TV Online</title>
   <style>
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
+
     h1 {
-      margin-bottom: 30px;
+      margin: 20px 0;
+      font-size: 2rem;
     }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      max-width: 800px;
-      margin: 0 auto;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      width: 90%;
+      max-width: 1200px;
+      margin-top: 20px;
     }
+
     .canal {
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      transition: transform 0.3s, background 0.3s;
+      border-radius: 20px;
+      padding: 30px 20px;
+      transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
       cursor: pointer;
+      outline: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .canal:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
-    }
+
     .canal img {
-      max-width: 80px;
-      margin-bottom: 10px;
+      max-width: 150px;
+      margin-bottom: 20px;
+      border-radius: 10px;
     }
+
     .canal h2 {
-      font-size: 1rem;
+      font-size: 1.3rem;
       margin: 0;
+      text-align: center;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
+
+    .canal:focus {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.15);
+      box-shadow: 0 0 30px #fff;
     }
   </style>
 </head>
 <body>
-  <h1>📺 Marcos tv Online</h1>
-  <div class="grid">
+  <h1>📺 Marcos TV Online</h1>
+  <div class="grid" id="grid">
     <!-- ESPN Brasil -->
-    <a href="https://enz.gdplayertv.to/embed/espn-br/" target="_blank">
-      <div class="canal">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
-        <h2>ESPN Brasil</h2>
-      </div>
-    </a>
+    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/embed/espn-br/">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
+      <h2>ESPN Brasil</h2>
+    </div>
 
     <!-- SporTV -->
-    <a href="https://enz.gdplayertv.to/embed/sportv/" target="_blank">
-      <div class="canal">
-        <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
-        <h2>SporTV</h2>
-      </div>
-    </a>
+    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/embed/sportv/">
+      <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
+      <h2>SporTV</h2>
+    </div>
 
-    <!-- Novo canal ESPN -->
-    <a href="https://enz.gdplayertv.to/channel/sport/" target="_blank">
-      <div class="canal">
-        <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="ESPN">
-        <h2>Marcos tv</h2>
-      </div>
-    </a>
+    <!-- Marcos TV -->
+    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/channel/sport/">
+      <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="Marcos TV">
+      <h2>Marcos TV</h2>
+    </div>
   </div>
+
+  <script>
+    const canais = document.querySelectorAll('.canal');
+    let current = 0;
+    canais[current].focus();
+
+    document.addEventListener('keydown', (e) => {
+      const cols = 3; // número de colunas visíveis
+      if(e.key === "ArrowRight"){
+        canais[current].blur();
+        current = (current + 1) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "ArrowLeft"){
+        canais[current].blur();
+        current = (current - 1 + canais.length) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "ArrowDown"){
+        canais[current].blur();
+        current = (current + cols) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "ArrowUp"){
+        canais[current].blur();
+        current = (current - cols + canais.length) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "Enter"){
+        const link = canais[current].dataset.link;
+        window.open(link, '_blank'); // abre no navegador externo
+      }
+    });
+  </script>
 </body>
 </html>
