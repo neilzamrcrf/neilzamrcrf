@@ -91,6 +91,7 @@
     let current = 0;
     canais[current].focus();
 
+    // Navegação com teclado/controle remoto
     document.addEventListener('keydown', (e) => {
       const cols = 3; // número de colunas visíveis
       if(e.key === "ArrowRight"){
@@ -117,6 +118,14 @@
         const link = canais[current].dataset.link;
         window.open(link, '_blank'); // abre no navegador externo
       }
+    });
+
+    // Suporte a toque/click para celular/tablet
+    canais.forEach(canal => {
+      canal.addEventListener('click', () => {
+        const link = canal.dataset.link;
+        window.open(link, '_blank');
+      });
     });
   </script>
 </body>
