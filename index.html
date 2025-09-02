@@ -1,78 +1,136 @@
-<!DOCTYPE html>  <html lang="pt-BR">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>marcos tv online</title>  
-  <style>  
-    body {  
-      font-family: Arial, sans-serif;  
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);  
-      color: #fff;  
-      margin: 0;  
-      padding: 20px;  
-      text-align: center;  
-    }  
-    h1 {  
-      margin-bottom: 30px;  
-    }  
-    .grid {  
-      display: grid;  
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));  
-      gap: 20px;  
-      max-width: 800px;  
-      margin: 0 auto;  
-    }  
-    .canal {  
-      background: rgba(255, 255, 255, 0.1);  
-      border-radius: 15px;  
-      padding: 20px;  
-      transition: transform 0.3s, background 0.3s;  
-      cursor: pointer;  
-    }  
-    .canal:hover {  
-      transform: scale(1.05);  
-      background: rgba(255, 255, 255, 0.2);  
-    }  
-    .canal img {  
-      max-width: 80px;  
-      margin-bottom: 10px;  
-    }  
-    .canal h2 {  
-      font-size: 1rem;  
-      margin: 0;  
-    }  
-    a {  
-      text-decoration: none;  
-      color: inherit;  
-      display: block;  
-    }  
-  </style>  
-</head>  
-<body>  
-  <h1>📺 Marcos tv Online</h1>  
-  <div class="grid">  
-    <!-- ESPN Brasil -->  
-    <a href="https://enz.gdplayertv.to/embed/espn-br/" target="_blank">  
-      <div class="canal">  
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">  
-        <h2>ESPN Brasil</h2>  
-      </div>  
-    </a>  <!-- SporTV -->  
-<a href="https://enz.gdplayertv.to/embed/sportv/" target="_blank">  
-  <div class="canal">  
-    <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">  
-    <h2>SporTV</h2>  
-  </div>  
-</a>  
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>marcos tv online</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .canal {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+    .canal:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .canal img {
+      max-width: 80px;
+      margin-bottom: 10px;
+    }
+    .canal h2 {
+      font-size: 1rem;
+      margin: 0;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    /* Estilos do player e botão */
+    #playerContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: none;
+      z-index: 9999;
+    }
+    #playerContainer iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    #fecharPlayer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: red;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+  <h1>📺 Marcos tv Online</h1>
+  <div class="grid">
+    <!-- ESPN Brasil -->
+    <a href="https://enz.gdplayertv.to/embed/espn-br/" class="canal-link">
+      <div class="canal">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
+        <h2>ESPN Brasil</h2>
+      </div>
+    </a>
 
-<!-- Novo canal ESPN -->  
-<a href="https://enz.gdplayertv.to/channel/sport/" target="_blank">  
-  <div class="canal">  
-    <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="ESPN">  
-    <h2>Marcos tv</h2>  
-  </div>  
-</a>
+    <!-- SporTV -->
+    <a href="https://enz.gdplayertv.to/embed/sportv/" class="canal-link">
+      <div class="canal">
+        <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
+        <h2>SporTV</h2>
+      </div>
+    </a>
 
-  </div>  
-</body>  
+    <!-- Novo canal ESPN -->
+    <a href="https://enz.gdplayertv.to/channel/sport/" class="canal-link">
+      <div class="canal">
+        <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="ESPN">
+        <h2>Marcos tv</h2>
+      </div>
+    </a>
+  </div>
+
+  <!-- Container do player fullscreen -->
+  <div id="playerContainer">
+    <button id="fecharPlayer">Fechar</button>
+    <iframe id="playerFrame" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    const links = document.querySelectorAll(".canal-link");
+    const playerContainer = document.getElementById("playerContainer");
+    const playerFrame = document.getElementById("playerFrame");
+    const fecharBtn = document.getElementById("fecharPlayer");
+
+    links.forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const url = link.getAttribute("href");
+        playerFrame.src = url;
+        playerContainer.style.display = "block";
+      });
+    });
+
+    fecharBtn.addEventListener("click", () => {
+      playerContainer.style.display = "none";
+      playerFrame.src = "";
+    });
+  </script>
+</body>
 </html>
