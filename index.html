@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>marcos tv online</title>
+  <title>Marcos TV Online</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
     .canal {
@@ -27,13 +27,14 @@
       padding: 20px;
       transition: transform 0.3s, background 0.3s;
       cursor: pointer;
+      outline: none;
     }
-    .canal:hover {
+    .canal:hover, .canal:focus {
       transform: scale(1.05);
       background: rgba(255, 255, 255, 0.2);
     }
     .canal img {
-      max-width: 80px;
+      max-width: 100px;
       margin-bottom: 10px;
     }
     .canal h2 { font-size: 1rem; margin: 0; }
@@ -44,15 +45,14 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 300px;
-      height: 170px;
+      width: 320px;
+      height: 180px;
       background: black;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.6);
       display: none;
       z-index: 9999;
-      resize: both;
     }
     #popupPlayer iframe {
       width: 100%;
@@ -76,37 +76,31 @@
       cursor: pointer;
       font-size: 14px;
     }
-    .popupBtn:hover {
+    .popupBtn:hover, .popupBtn:focus {
       background: rgba(255,255,255,0.3);
     }
   </style>
 </head>
 <body>
-  <h1>📺 Marcos tv Online</h1>
+  <h1>📺 Marcos TV Online</h1>
   <div class="grid">
     <!-- ESPN Brasil -->
-    <a href="https://enz.gdplayertv.to/embed/espn-br/" class="canal-link">
-      <div class="canal">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
-        <h2>ESPN Brasil</h2>
-      </div>
-    </a>
+    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/embed/espn-br/">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
+      <h2>ESPN Brasil</h2>
+    </div>
 
     <!-- SporTV -->
-    <a href="https://enz.gdplayertv.to/embed/sportv/" class="canal-link">
-      <div class="canal">
-        <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
-        <h2>SporTV</h2>
-      </div>
-    </a>
+    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/embed/sportv/">
+      <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
+      <h2>SporTV</h2>
+    </div>
 
-    <!-- Novo canal ESPN -->
-    <a href="https://enz.gdplayertv.to/channel/sport/" class="canal-link">
-      <div class="canal">
-        <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="ESPN">
-        <h2>Marcos tv</h2>
-      </div>
-    </a>
+    <!-- Marcos TV -->
+    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/channel/sport/">
+      <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="Marcos TV">
+      <h2>Marcos TV</h2>
+    </div>
   </div>
 
   <!-- Popup Player -->
@@ -119,29 +113,28 @@
   </div>
 
   <script>
-    const links = document.querySelectorAll(".canal-link");
+    const canais = document.querySelectorAll(".canal");
     const popupPlayer = document.getElementById("popupPlayer");
     const popupFrame = document.getElementById("popupFrame");
     const expandBtn = document.getElementById("expandBtn");
     const closeBtn = document.getElementById("closeBtn");
 
-    // abrir popup
-    links.forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        const url = link.getAttribute("href");
+    // Abrir com clique (celular/PC)
+    canais.forEach(canal => {
+      canal.addEventListener("click", () => {
+        const url = canal.dataset.link;
         popupFrame.src = url;
         popupPlayer.style.display = "block";
       });
     });
 
-    // fechar popup
+    // Fechar player
     closeBtn.addEventListener("click", () => {
       popupPlayer.style.display = "none";
       popupFrame.src = "";
     });
 
-    // expandir popup para 100% da tela
+    // Expandir para tela cheia
     expandBtn.addEventListener("click", () => {
       if (popupPlayer.style.width !== "100vw") {
         popupPlayer.style.top = "0";
@@ -152,11 +145,44 @@
         popupPlayer.style.height = "100vh";
         popupPlayer.style.borderRadius = "0";
       } else {
-        popupPlayer.style.width = "300px";
-        popupPlayer.style.height = "170px";
+        popupPlayer.style.width = "320px";
+        popupPlayer.style.height = "180px";
         popupPlayer.style.bottom = "20px";
         popupPlayer.style.right = "20px";
         popupPlayer.style.borderRadius = "12px";
+      }
+    });
+
+    // Navegação com controle remoto (Android TV)
+    let current = 0;
+    canais[current].focus();
+
+    document.addEventListener("keydown", (e) => {
+      const cols = 3; // colunas da grade
+      if(e.key === "ArrowRight"){
+        canais[current].blur();
+        current = (current + 1) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "ArrowLeft"){
+        canais[current].blur();
+        current = (current - 1 + canais.length) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "ArrowDown"){
+        canais[current].blur();
+        current = (current + cols) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "ArrowUp"){
+        canais[current].blur();
+        current = (current - cols + canais.length) % canais.length;
+        canais[current].focus();
+      }
+      if(e.key === "Enter"){
+        const link = canais[current].dataset.link;
+        popupFrame.src = link;
+        popupPlayer.style.display = "block";
       }
     });
   </script>
