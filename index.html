@@ -39,53 +39,45 @@
     .canal h2 { font-size: 1rem; margin: 0; }
     a { text-decoration: none; color: inherit; display: block; }
 
-    /* Container do player */
-    #playerContainer {
+    /* Popup Player */
+    #popupPlayer {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      height: 170px;
       background: black;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
       display: none;
       z-index: 9999;
+      resize: both;
     }
-    #playerContainer iframe {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+    #popupPlayer iframe {
+      width: 100%;
+      height: 100%;
       border: none;
-      background: black;
-
-      /* Força ocupar toda tela sem barras pretas */
-      object-fit: cover;
     }
-    /* Botão fechar */
-    #fecharPlayer {
+    #popupControls {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background: red;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
+      top: 5px;
+      left: 5px;
+      display: flex;
+      gap: 5px;
       z-index: 10000;
     }
-    /* Botão tela cheia */
-    #fullscreenBtn {
-      position: absolute;
-      top: 10px;
-      left: 90px;
-      background: green;
+    .popupBtn {
+      background: rgba(0,0,0,0.6);
       color: white;
       border: none;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 8px;
+      padding: 5px 8px;
+      border-radius: 6px;
       cursor: pointer;
-      z-index: 10000;
+      font-size: 14px;
+    }
+    .popupBtn:hover {
+      background: rgba(255,255,255,0.3);
     }
   </style>
 </head>
@@ -117,44 +109,54 @@
     </a>
   </div>
 
-  <!-- Container do player -->
-  <div id="playerContainer">
-    <button id="fecharPlayer">⏹ Fechar</button>
-    <button id="fullscreenBtn">⛶ Tela Cheia</button>
-    <iframe id="playerFrame" allow="fullscreen" allowfullscreen></iframe>
+  <!-- Popup Player -->
+  <div id="popupPlayer">
+    <div id="popupControls">
+      <button class="popupBtn" id="expandBtn">⛶</button>
+      <button class="popupBtn" id="closeBtn">✖</button>
+    </div>
+    <iframe id="popupFrame" allow="fullscreen" allowfullscreen></iframe>
   </div>
 
   <script>
     const links = document.querySelectorAll(".canal-link");
-    const playerContainer = document.getElementById("playerContainer");
-    const playerFrame = document.getElementById("playerFrame");
-    const fecharBtn = document.getElementById("fecharPlayer");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const popupPlayer = document.getElementById("popupPlayer");
+    const popupFrame = document.getElementById("popupFrame");
+    const expandBtn = document.getElementById("expandBtn");
+    const closeBtn = document.getElementById("closeBtn");
 
-    // abrir player
+    // abrir popup
     links.forEach(link => {
       link.addEventListener("click", e => {
         e.preventDefault();
         const url = link.getAttribute("href");
-        playerFrame.src = url;
-        playerContainer.style.display = "block";
+        popupFrame.src = url;
+        popupPlayer.style.display = "block";
       });
     });
 
-    // fechar player
-    fecharBtn.addEventListener("click", () => {
-      playerContainer.style.display = "none";
-      playerFrame.src = "";
+    // fechar popup
+    closeBtn.addEventListener("click", () => {
+      popupPlayer.style.display = "none";
+      popupFrame.src = "";
     });
 
-    // forçar fullscreen real
-    fullscreenBtn.addEventListener("click", () => {
-      if (playerContainer.requestFullscreen) {
-        playerContainer.requestFullscreen();
-      } else if (playerContainer.webkitRequestFullscreen) {
-        playerContainer.webkitRequestFullscreen(); // iOS Safari
-      } else if (playerContainer.msRequestFullscreen) {
-        playerContainer.msRequestFullscreen();
+    // expandir popup para 100% da tela
+    expandBtn.addEventListener("click", () => {
+      if (popupPlayer.style.width !== "100vw") {
+        popupPlayer.style.top = "0";
+        popupPlayer.style.left = "0";
+        popupPlayer.style.bottom = "0";
+        popupPlayer.style.right = "0";
+        popupPlayer.style.width = "100vw";
+        popupPlayer.style.height = "100vh";
+        popupPlayer.style.borderRadius = "0";
+      } else {
+        popupPlayer.style.width = "300px";
+        popupPlayer.style.height = "170px";
+        popupPlayer.style.bottom = "20px";
+        popupPlayer.style.right = "20px";
+        popupPlayer.style.borderRadius = "12px";
       }
     });
   </script>
