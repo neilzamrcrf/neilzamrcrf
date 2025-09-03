@@ -55,6 +55,9 @@
       height: 100vh;
       border: none;
       background: black;
+
+      /* Força ocupar toda tela sem barras pretas */
+      object-fit: cover;
     }
     /* Botão fechar */
     #fecharPlayer {
@@ -118,7 +121,7 @@
   <div id="playerContainer">
     <button id="fecharPlayer">⏹ Fechar</button>
     <button id="fullscreenBtn">⛶ Tela Cheia</button>
-    <iframe id="playerFrame" allowfullscreen></iframe>
+    <iframe id="playerFrame" allow="fullscreen" allowfullscreen></iframe>
   </div>
 
   <script>
