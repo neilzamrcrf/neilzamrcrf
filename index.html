@@ -3,187 +3,409 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marcos TV Online</title>
+  <title>MARCOS TV ONLINE - EXPERIÊNCIA RADICAL</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+    
+    :root {
+      --neon-blue: #00f3ff;
+      --neon-pink: #ff00ff;
+      --neon-green: #39ff14;
+      --dark-bg: #0a0a1a;
+      --grid-color: rgba(0, 243, 255, 0.15);
+    }
+    
+    * {
       margin: 0;
-      padding: 20px;
-      text-align: center;
+      padding: 0;
+      box-sizing: border-box;
     }
-    h1 { margin-bottom: 30px; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      max-width: 900px;
-      margin: 0 auto;
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background-color: var(--dark-bg);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(57, 255, 20, 0.05) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.05) 0%, transparent 25%),
+        linear-gradient(0deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent);
+      background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+      background-position: 0 0, 0 0, 0 0, 0 0;
+      animation: gridMove 20s linear infinite;
     }
-    .canal {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      transition: transform 0.3s, background 0.3s;
-      cursor: pointer;
-      outline: none;
+    
+    @keyframes gridMove {
+      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 0 0, 0 0, 50px 50px, 50px 50px; }
     }
-    .canal:hover, .canal:focus {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
-    }
-    .canal img {
-      max-width: 100px;
-      margin-bottom: 10px;
-    }
-    .canal h2 { font-size: 1rem; margin: 0; }
-    a { text-decoration: none; color: inherit; display: block; }
-
-    /* Popup Player */
-    #popupPlayer {
+    
+    .noise {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 320px;
-      height: 180px;
-      background: black;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(0,0,0,0.6);
-      display: none;
-      z-index: 9999;
-    }
-    #popupPlayer iframe {
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      border: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: -1;
     }
-    #popupControls {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      display: flex;
-      gap: 5px;
-      z-index: 10000;
+    
+    .glow-effect {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vmin;
+      height: 80vmin;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, rgba(255, 0, 255, 0.1) 30%, transparent 70%);
+      filter: blur(70px);
+      animation: pulse 15s ease-in-out infinite alternate;
+      z-index: -2;
     }
-    .popupBtn {
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border: none;
-      padding: 5px 8px;
-      border-radius: 6px;
+    
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.8); }
+      50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
+      100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.8); }
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+    
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+      text-shadow: 
+        0 0 5px var(--neon-blue),
+        0 0 10px var(--neon-blue),
+        0 0 20px var(--neon-blue),
+        0 0 40px var(--neon-blue);
+      animation: flicker 3s infinite alternate;
+    }
+    
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 
+          0 0 5px var(--neon-blue),
+          0 0 10px var(--neon-blue),
+          0 0 20px var(--neon-blue),
+          0 0 40px var(--neon-blue);
+      }
+      20%, 24%, 55% {
+        text-shadow: none;
+      }
+    }
+    
+    .subtitle {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: var(--neon-pink);
+      margin-bottom: 30px;
+      text-transform: uppercase;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+    
+    .canal {
+      background: rgba(10, 10, 26, 0.7);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 10px;
+      padding: 25px 20px;
+      transition: all 0.4s ease;
       cursor: pointer;
-      font-size: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 0 10px rgba(0, 243, 255, 0.2),
+        inset 0 0 20px rgba(0, 243, 255, 0.1);
     }
-    .popupBtn:hover, .popupBtn:focus {
-      background: rgba(255,255,255,0.3);
+    
+    .canal::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      z-index: -1;
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green), var(--neon-pink));
+      background-size: 400%;
+      border-radius: 10px;
+      animation: glowing 20s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    .canal:hover::before {
+      opacity: 1;
+    }
+    
+    .canal:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 
+        0 0 20px var(--neon-blue),
+        0 0 40px var(--neon-pink),
+        0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    @keyframes glowing {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+    }
+    
+    .canal img {
+      max-width: 80px;
+      height: auto;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 5px rgba(0, 243, 255, 0.5));
+      transition: all 0.3s ease;
+    }
+    
+    .canal:hover img {
+      filter: drop-shadow(0 0 10px var(--neon-blue)) brightness(1.2);
+      transform: scale(1.1);
+    }
+    
+    .canal h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      margin: 0;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+    }
+    
+    .canal:hover h2 {
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.03) 50%, 
+        rgba(255, 255, 255, 0) 100%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.2;
+    }
+    
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>📺 Marcos TV Online</h1>
-  <div class="grid">
-    <!-- ESPN Brasil -->
-    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/embed/espn-br/">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
-      <h2>ESPN Brasil</h2>
+  <div class="noise"></div>
+  <div class="glow-effect"></div>
+  <div class="scanlines"></div>
+  <div class="particles" id="particles"></div>
+  
+  <div class="container">
+    <header>
+      <h1>MARCOS TV ONLINE</h1>
+      <div class="subtitle">EXPERIÊNCIA RADICAL DE STREAMING</div>
+    </header>
+    
+    <div class="grid">
+      <!-- ESPN Brasil -->
+      <a href="https://enz.gdplayertv.to/embed/espn-br/" target="_blank">
+        <div class="canal">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN Brasil">
+          <h2>ESPN Brasil</h2>
+        </div>
+      </a>
+      
+      <!-- SporTV -->
+      <a href="https://enz.gdplayertv.to/embed/sportv/" target="_blank">
+        <div class="canal">
+          <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
+          <h2>SporTV</h2>
+        </div>
+      </a>
+      
+      <!-- Novo canal ESPN -->
+      <a href="https://enz.gdplayertv.to/channel/sport/" target="_blank">
+        <div class="canal">
+          <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="ESPN">
+          <h2>Marcos tv</h2>
+        </div>
+      </a>
+      
+      <!-- Canais adicionais para preencher -->
+      <a href="#" target="_blank">
+        <div class="canal">
+          <img src="https://cdn-icons-png.flaticon.com/512/2491/2491939.png" alt="Canal 4">
+          <h2>Esportes HD</h2>
+        </div>
+      </a>
+      
+      <a href="#" target="_blank">
+        <div class="canal">
+          <img src="https://cdn-icons-png.flaticon.com/512/2491/2491942.png" alt="Canal 5">
+          <h2>Futebol Ao Vivo</h2>
+        </div>
+      </a>
+      
+      <a href="#" target="_blank">
+        <div class="canal">
+          <img src="https://cdn-icons-png.flaticon.com/512/2491/2491912.png" alt="Canal 6">
+          <h2>UFC TV</h2>
+        </div>
+      </a>
     </div>
-
-    <!-- SporTV -->
-    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/embed/sportv/">
-      <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SporTV">
-      <h2>SporTV</h2>
-    </div>
-
-    <!-- Marcos TV -->
-    <div class="canal" tabindex="0" data-link="https://enz.gdplayertv.to/channel/sport/">
-      <img src="https://i.ibb.co/zdc29yJ/Screenshot-2025-09-01-17-17-06-731-com-miui-home.png" alt="Marcos TV">
-      <h2>Marcos TV</h2>
-    </div>
-  </div>
-
-  <!-- Popup Player -->
-  <div id="popupPlayer">
-    <div id="popupControls">
-      <button class="popupBtn" id="expandBtn">⛶</button>
-      <button class="popupBtn" id="closeBtn">✖</button>
-    </div>
-    <iframe id="popupFrame" allow="fullscreen" allowfullscreen></iframe>
   </div>
 
   <script>
-    const canais = document.querySelectorAll(".canal");
-    const popupPlayer = document.getElementById("popupPlayer");
-    const popupFrame = document.getElementById("popupFrame");
-    const expandBtn = document.getElementById("expandBtn");
-    const closeBtn = document.getElementById("closeBtn");
-
-    // Abrir com clique (celular/PC)
-    canais.forEach(canal => {
-      canal.addEventListener("click", () => {
-        const url = canal.dataset.link;
-        popupFrame.src = url;
-        popupPlayer.style.display = "block";
+    // Criar partículas flutuantes
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const colors = ['#00f3ff', '#ff00ff', '#39ff14'];
+      
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Propriedades aleatórias
+        const size = Math.random() * 5 + 2;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const posX = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 10 + Math.random() * 20;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.background = color;
+        particle.style.left = `${posX}vw`;
+        particle.style.top = '100vh';
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Efeito de digitação no título
+    function typeWriterEffect() {
+      const title = document.querySelector('h1');
+      const originalText = title.textContent;
+      title.textContent = '';
+      
+      let i = 0;
+      const speed = 100;
+      
+      function type() {
+        if (i < originalText.length) {
+          title.textContent += originalText.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      
+      setTimeout(type, 1000);
+    }
+    
+    // Efeito de entrada nos cards
+    function animateCards() {
+      const cards = document.querySelectorAll('.canal');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(50px)';
+        
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 300 + (index * 100));
       });
-    });
-
-    // Fechar player
-    closeBtn.addEventListener("click", () => {
-      popupPlayer.style.display = "none";
-      popupFrame.src = "";
-    });
-
-    // Expandir para tela cheia
-    expandBtn.addEventListener("click", () => {
-      if (popupPlayer.style.width !== "100vw") {
-        popupPlayer.style.top = "0";
-        popupPlayer.style.left = "0";
-        popupPlayer.style.bottom = "0";
-        popupPlayer.style.right = "0";
-        popupPlayer.style.width = "100vw";
-        popupPlayer.style.height = "100vh";
-        popupPlayer.style.borderRadius = "0";
-      } else {
-        popupPlayer.style.width = "320px";
-        popupPlayer.style.height = "180px";
-        popupPlayer.style.bottom = "20px";
-        popupPlayer.style.right = "20px";
-        popupPlayer.style.borderRadius = "12px";
-      }
-    });
-
-    // Navegação com controle remoto (Android TV)
-    let current = 0;
-    canais[current].focus();
-
-    document.addEventListener("keydown", (e) => {
-      const cols = 3; // colunas da grade
-      if(e.key === "ArrowRight"){
-        canais[current].blur();
-        current = (current + 1) % canais.length;
-        canais[current].focus();
-      }
-      if(e.key === "ArrowLeft"){
-        canais[current].blur();
-        current = (current - 1 + canais.length) % canais.length;
-        canais[current].focus();
-      }
-      if(e.key === "ArrowDown"){
-        canais[current].blur();
-        current = (current + cols) % canais.length;
-        canais[current].focus();
-      }
-      if(e.key === "ArrowUp"){
-        canais[current].blur();
-        current = (current - cols + canais.length) % canais.length;
-        canais[current].focus();
-      }
-      if(e.key === "Enter"){
-        const link = canais[current].dataset.link;
-        popupFrame.src = link;
-        popupPlayer.style.display = "block";
-      }
+    }
+    
+    // Inicializar efeitos quando a página carregar
+    window.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      typeWriterEffect();
+      animateCards();
     });
   </script>
 </body>
