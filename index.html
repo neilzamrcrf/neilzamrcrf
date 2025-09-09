@@ -1,843 +1,205 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MARCOS TV ONLINE - EXPERIÊNCIA RADICAL</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
-    
-    :root {
-      --neon-blue: #00f3ff;
-      --neon-pink: #ff00ff;
-      --neon-green: #39ff14;
-      --neon-purple: #bd00ff;
-      --dark-bg: #0a0a1a;
-      --darker-bg: #050510;
-      --grid-color: rgba(0, 243, 255, 0.15);
-      --card-bg: rgba(15, 15, 35, 0.7);
-      --header-height: 80px;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Rajdhani', sans-serif;
-      background-color: var(--darker-bg);
-      color: #fff;
-      min-height: 100vh;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 50%, rgba(57, 255, 20, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 50% 80%, rgba(189, 0, 255, 0.05) 0%, transparent 25%),
-        linear-gradient(0deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent),
-        linear-gradient(90deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 50px 50px, 50px 50px;
-      background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
-      animation: gridMove 20s linear infinite;
-    }
-    
-    @keyframes gridMove {
-      0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: 0 0, 0 0, 0 0, 50px 50px, 50px 50px; }
-    }
-    
-    .noise {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      opacity: 0.03;
-      pointer-events: none;
-      z-index: -1;
-    }
-    
-    .glow-effect {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80vmin;
-      height: 80vmin;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, rgba(255, 0, 255, 0.1) 30%, transparent 70%);
-      filter: blur(70px);
-      animation: pulse 15s ease-in-out infinite alternate;
-      z-index: -2;
-    }
-    
-    @keyframes pulse {
-      0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.8); }
-      50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
-      100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.8); }
-    }
-    
-    /* Header estilizado */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--header-height);
-      background: rgba(10, 10, 26, 0.8);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      z-index: 1000;
-    }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    .logo-icon {
-      font-size: 2rem;
-      color: var(--neon-blue);
-      text-shadow: 0 0 10px var(--neon-blue);
-    }
-    
-    .logo-text {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 1.8rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: gradientShift 5s ease infinite;
-    }
-    
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    
-    .search-container {
-      position: relative;
-      width: 300px;
-    }
-    
-    .search-container input {
-      width: 100%;
-      padding: 10px 15px 10px 40px;
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.3);
-      color: white;
-      font-family: 'Rajdhani', sans-serif;
-      transition: all 0.3s ease;
-    }
-    
-    .search-container input:focus {
-      outline: none;
-      border-color: var(--neon-blue);
-      box-shadow: 0 0 10px var(--neon-blue);
-    }
-    
-    .search-container i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--neon-blue);
-    }
-    
-    /* Container principal */
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 30px 20px;
-      padding-top: calc(var(--header-height) + 30px);
-      position: relative;
-      z-index: 1;
-    }
-    
-    .hero {
-      text-align: center;
-      margin-bottom: 50px;
-      position: relative;
-    }
-    
-    .hero h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      margin-bottom: 15px;
-      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-      animation: flicker 3s infinite alternate, gradientShift 8s ease infinite;
-    }
-    
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
-      }
-      20%, 24%, 55% {
-        text-shadow: none;
-      }
-    }
-    
-    .subtitle {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      letter-spacing: 3px;
-      color: var(--neon-pink);
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    
-    .description {
-      max-width: 700px;
-      margin: 0 auto;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.8);
-    }
-    
-    /* Filtro de categorias */
-    .categories {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 30px 0;
-      flex-wrap: wrap;
-    }
-    
-    .category-btn {
-      padding: 8px 20px;
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 20px;
-      background: rgba(15, 15, 35, 0.5);
-      color: rgba(255, 255, 255, 0.8);
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .category-btn:hover, .category-btn.active {
-      background: rgba(0, 243, 255, 0.2);
-      color: var(--neon-blue);
-      border-color: var(--neon-blue);
-      box-shadow: 0 0 10px var(--neon-blue);
-    }
-    
-    /* Grid de canais melhorado */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
-    }
-    
-    .canal {
-      background: var(--card-bg);
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 15px;
-      padding: 25px 20px;
-      transition: all 0.4s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      height: 100%;
-    }
-    
-    .canal::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      z-index: -1;
-      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green), var(--neon-purple));
-      background-size: 400%;
-      border-radius: 15px;
-      animation: glowing 20s linear infinite;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-    
-    .canal:hover::before {
-      opacity: 1;
-    }
-    
-    .canal:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3), 0 15px 35px rgba(255, 0, 255, 0.2);
-    }
-    
-    @keyframes glowing {
-      0% { background-position: 0 0; }
-      50% { background-position: 400% 0; }
-      100% { background-position: 0 0; }
-    }
-    
-    .canal-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--neon-green);
-      color: black;
-      font-size: 0.7rem;
-      font-weight: bold;
-      padding: 3px 8px;
-      border-radius: 10px;
-    }
-    
-    .canal-img-container {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 2px solid rgba(0, 243, 255, 0.3);
-      padding: 15px;
-      transition: all 0.3s ease;
-    }
-    
-    .canal:hover .canal-img-container {
-      background: rgba(0, 0, 0, 0.5);
-      border-color: var(--neon-blue);
-      transform: scale(1.1) rotate(5deg);
-    }
-    
-    .canal img {
-      max-width: 100%;
-      max-height: 100%;
-      filter: drop-shadow(0 0 5px rgba(0, 243, 255, 0.5));
-      transition: all 0.3s ease;
-    }
-    
-    .canal:hover img {
-      filter: drop-shadow(0 0 10px var(--neon-blue)) brightness(1.2);
-    }
-    
-    .canal h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
-      margin: 0 0 10px 0;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-      transition: all 0.3s ease;
-    }
-    
-    .canal:hover h2 {
-      color: var(--neon-blue);
-      text-shadow: 0 0 10px var(--neon-blue);
-    }
-    
-    .canal p {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 15px;
-      line-height: 1.4;
-    }
-    
-    .canal-tags {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: auto;
-    }
-    
-    .canal-tag {
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 10px;
-      background: rgba(0, 243, 255, 0.1);
-      color: var(--neon-blue);
-    }
-    
-    a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-    
-    /* Footer */
-    footer {
-      text-align: center;
-      margin-top: 80px;
-      padding: 30px 0;
-      border-top: 1px solid rgba(0, 243, 255, 0.2);
-    }
-    
-    .footer-text {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
-    }
-    
-    /* Efeitos visuais */
-    .scanlines {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0) 100%);
-      background-size: 100% 4px;
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.15;
-    }
-    
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-    
-    .particle {
-      position: absolute;
-      background: var(--neon-blue);
-      border-radius: 50%;
-      opacity: 0;
-      animation: float 15s infinite linear;
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0) translateX(0); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.7; }
-      100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
-    }
-    
-    /* Modal de loading */
-    .loading-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(5, 5, 16, 0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      transition: opacity 0.5s ease;
-    }
-    
-    .loading-spinner {
-      width: 60px;
-      height: 60px;
-      border: 5px solid rgba(0, 243, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--neon-blue);
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .loading-text {
-      font-family: 'Orbitron', sans-serif;
-      color: var(--neon-blue);
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-    }
-    
-    /* Responsividade */
-    @media (max-width: 1024px) {
-      .grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      }
-    }
-    
-    @media (max-width: 768px) {
-      header {
-        padding: 0 15px;
-        flex-direction: column;
-        height: auto;
-        padding: 10px;
-      }
-      
-      .logo {
-        margin-bottom: 10px;
-      }
-      
-      .search-container {
-        width: 100%;
-        max-width: 300px;
-      }
-      
-      .container {
-        padding-top: 120px;
-      }
-      
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      
-      .grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
-      }
-      
-      .canal {
-        padding: 20px 15px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .hero h1 {
-        font-size: 2rem;
-      }
-      
-      .subtitle {
-        font-size: 1rem;
-      }
-      
-      .categories {
-        gap: 10px;
-      }
-      
-      .category-btn {
-        padding: 6px 15px;
-        font-size: 0.9rem;
-      }
-      
-      .grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="noise"></div>
-  <div class="glow-effect"></div>
-  <div class="scanlines"></div>
-  <div class="particles" id="particles"></div>
+<!DOCTYPE html>  <html lang="pt-BR">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>MARCOS TV ONLINE - EXPERIÊNCIA RADICAL</title>  
+  <style>  
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');  :root {  
+  --neon-blue: #00f3ff;  
+  --neon-pink: #ff00ff;  
+  --neon-green: #39ff14;  
+  --dark-bg: #0a0a1a;  
+  --grid-color: rgba(0, 243, 255, 0.15);  
+}  
   
-  <div class="loading-modal" id="loadingModal">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">CARREGANDO...</div>
-  </div>
+* { margin: 0; padding: 0; box-sizing: border-box; }  
+body {  
+  font-family: 'Rajdhani', sans-serif;  
+  background-color: var(--dark-bg);  
+  color: #fff;  
+  min-height: 100vh;  
+  overflow-x: hidden;  
+  background-image:   
+    radial-gradient(circle at 15% 50%, rgba(57, 255, 20, 0.05) 0%, transparent 25%),  
+    radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.05) 0%, transparent 25%),  
+    linear-gradient(0deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent),  
+    linear-gradient(90deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent);  
+  background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;  
+  background-position: 0 0, 0 0, 0 0, 0 0;  
+  animation: gridMove 20s linear infinite;  
+}  
+@keyframes gridMove {  
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }  
+  100% { background-position: 0 0, 0 0, 50px 50px, 50px 50px; }  
+}  
   
-  <header>
-    <div class="logo">
-      <div class="logo-icon"><i class="fas fa-satellite-dish"></i></div>
-      <div class="logo-text">MARCOS TV</div>
-    </div>
-    
-    <div class="search-container">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInput" placeholder="Buscar canal...">
-    </div>
-  </header>
+.noise { position: fixed; top:0; left:0; width:100%; height:100%; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity:0.03; pointer-events:none; z-index:-1; }  
+.glow-effect { position: fixed; top:50%; left:50%; transform: translate(-50%, -50%); width:80vmin; height:80vmin; border-radius:50%; background: radial-gradient(circle, rgba(0,243,255,0.2) 0%, rgba(255,0,255,0.1) 30%, transparent 70%); filter: blur(70px); animation:pulse 15s ease-in-out infinite alternate; z-index:-2; }  
+@keyframes pulse { 0% {opacity:0.4; transform:translate(-50%,-50%) scale(0.8);} 50% {opacity:0.7; transform:translate(-50%,-50%) scale(1.2);} 100% {opacity:0.4; transform:translate(-50%,-50%) scale(0.8);} }  
   
-  <div class="container">
-    <div class="hero">
-      <h1>MARCOS TV ONLINE</h1>
-      <div class="subtitle">EXPERIÊNCIA RADICAL DE STREAMING</div>
-      <p class="description">Acesse os melhores canais de esportes, filmes e séries em alta definição. Transmissão contínua e qualidade premium para você.</p>
-    </div>
-    
-    <div class="categories">
-      <button class="category-btn active" data-category="all">Todos</button>
-      <button class="category-btn" data-category="sports">Esportes</button>
-      <button class="category-btn" data-category="movies">Filmes & Séries</button>
-      <button class="category-btn" data-category="premium">Premium</button>
-    </div>
-    
-    <div class="grid" id="canalsGrid">
-      <!-- ESPN HD -->
-      <a href="https://enz.gdplayertv.to/embed/espn-br/" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="sports">
-          <span class="canal-badge">AO VIVO</span>
-          <div class="canal-img-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">
-          </div>
-          <h2>ESPN HD</h2>
-          <p>Os melhores jogos e eventos esportivos em alta definição</p>
-          <div class="canal-tags">
-            <span class="canal-tag">ESPORTES</span>
-            <span class="canal-tag">FUTEBOL</span>
-          </div>
-        </div>
-      </a>
-      
-      <!-- SPORTV HD -->
-      <a href="https://enz.gdplayertv.to/embed/sportv/" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="sports">
-          <span class="canal-badge">AO VIVO</span>
-          <div class="canal-img-container">
-            <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">
-          </div>
-          <h2>SPORTV HD</h2>
-          <p>Cobertura completa dos principais eventos esportivos</p>
-          <div class="canal-tags">
-            <span class="canal-tag">ESPORTES</span>
-            <span class="canal-tag">FUTEBOL</span>
-          </div>
-        </div>
-      </a>
-      
-      <!-- CANAL DE ESPORTE -->
-      <a href="https://enz.gdplayertv.to/channel/sport/" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="sports">
-          <div class="canal-img-container">
-            <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">
-          </div>
-          <h2>CANAL DE ESPORTE 1</h2>
-          <p>Variedade de conteúdos esportivos nacionais e internacionais</p>
-          <div class="canal-tags">
-            <span class="canal-tag">ESPORTES</span>
-            <span class="canal-tag">LUTAS</span>
-          </div>
-        </div>
-      </a>
-      
-      <!-- CANAIS DE ESPORTE -->
-      <a href="https://la14hd.com/" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="sports">
-          <div class="canal-img-container">
-            <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
-          </div>
-          <h2>CANAIS DE ESPORTE 2</h2>
-          <p>Transmissão de diversos eventos esportivos ao vivo</p>
-          <div class="canal-tags">
-            <span class="canal-tag">ESPORTES</span>
-            <span class="canal-tag">VARIEDADES</span>
-          </div>
-        </div>
-      </a>
-      
-      <!-- TV SKY -->
-      <a href="https://embedcanais.com/" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="premium">
-          <span class="canal-badge">PREMIUM</span>
-          <div class="canal-img-container">
-            <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
-          </div>
-          <h2>TV SKY</h2>
-          <p>Canais premium com os melhores conteúdos exclusivos</p>
-          <div class="canal-tags">
-            <span class="canal-tag">PREMIUM</span>
-            <span class="canal-tag">FILMES</span>
-          </div>
-        </div>
-      </a>
-      
-      <!-- PREMIERE CLUBES HD -->
-      <a href="https://la14hd.com/vivo/canales.php?stream=premiere1" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="sports">
-          <span class="canal-badge">4K</span>
-          <div class="canal-img-container">
-            <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">
-          </div>
-          <h2>PREMIERE CLUBES HD</h2>
-          <p>Jogos dos principais clubes brasileiros em alta definição</p>
-          <div class="canal-tags">
-            <span class="canal-tag">ESPORTES</span>
-            <span class="canal-tag">FUTEBOL</span>
-          </div>
-        </div>
-      </a>
-      
-      <!-- FILMES E SÉRIES -->
-      <a href="https://redecanais.gd/index.html" onclick="openInWebView(this.href); return false;">
-        <div class="canal" data-category="movies">
-          <div class="canal-img-container">
-            <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">
-          </div>
-          <h2>FILMES E SÉRIES</h2>
-          <p>Catálogo completo com os melhores filmes e séries</p>
-          <div class="canal-tags">
-            <span class="canal-tag">FILMES</span>
-            <span class="canal-tag">SÉRIES</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
+.container { max-width:1200px; margin:0 auto; padding:30px 20px; position:relative; z-index:1; }  
+header { text-align:center; margin-bottom:50px; position:relative; }  
+h1 { font-family:'Orbitron', sans-serif; font-size:3.5rem; font-weight:900; text-transform:uppercase; letter-spacing:4px; margin-bottom:20px; text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue); animation:flicker 3s infinite alternate; }  
+@keyframes flicker { 0%,19%,21%,23%,25%,54%,56%,100% { text-shadow: 0 0 5px var(--neon-blue),0 0 10px var(--neon-blue),0 0 20px var(--neon-blue),0 0 40px var(--neon-blue); } 20%,24%,55% { text-shadow:none; } }  
+.subtitle { font-family:'Orbitron', sans-serif; font-size:1.2rem; letter-spacing:3px; color:var(--neon-pink); margin-bottom:30px; text-transform:uppercase; }  
   
-  <footer>
-    <p class="footer-text">MARCOS TV ONLINE © 2023 - Todos os direitos reservados</p>
-  </footer>
+.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:30px; margin-top:50px; }  
+.canal { background:rgba(10,10,26,0.7); border:1px solid rgba(0,243,255,0.3); border-radius:10px; padding:25px 20px; transition: all 0.4s ease; cursor:pointer; position:relative; overflow:hidden; box-shadow: 0 0 10px rgba(0,243,255,0.2), inset 0 0 20px rgba(0,243,255,0.1); }  
+.canal::before { content:''; position:absolute; top:-2px; left:-2px; right:-2px; bottom:-2px; z-index:-1; background:linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green), var(--neon-pink)); background-size:400%; border-radius:10px; animation:glowing 20s linear infinite; opacity:0; transition:opacity 0.3s ease-in-out; }  
+.canal:hover::before { opacity:1; }  
+.canal:hover { transform:translateY(-10px) scale(1.05); box-shadow:0 0 20px var(--neon-blue),0 0 40px var(--neon-pink),0 10px 30px rgba(0,0,0,0.5); }  
+@keyframes glowing { 0% {background-position:0 0;} 50% {background-position:400% 0;} 100% {background-position:0 0;} }  
+.canal img { max-width:80px; height:auto; margin-bottom:15px; filter:drop-shadow(0 0 5px rgba(0,243,255,0.5)); transition: all 0.3s ease; }  
+.canal:hover img { filter: drop-shadow(0 0 10px var(--neon-blue)) brightness(1.2); transform: scale(1.1); }  
+.canal h2 { font-family:'Orbitron', sans-serif; font-size:1.2rem; margin:0; color:#fff; text-shadow:0 0 10px rgba(255,255,255,0.7); transition: all 0.3s ease; }  
+.canal:hover h2 { color: var(--neon-blue); text-shadow:0 0 10px var(--neon-blue); }  
+a { text-decoration:none; color:inherit; display:block; }  
   
-  <script>
-    // Abrir links dentro do WebView
-    function openInWebView(url) {
-      const loadingModal = document.getElementById('loadingModal');
-      loadingModal.style.display = 'flex';
+.scanlines { position:fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0) 100%); background-size:100% 4px; pointer-events:none; z-index:999; opacity:0.2; }  
+.particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1; }  
+.particle { position:absolute; background:var(--neon-blue); border-radius:50%; opacity:0; animation:float 15s infinite linear; }  
+@keyframes float { 0% {transform:translateY(0) translateX(0); opacity:0;} 10% {opacity:0.7;} 90% {opacity:0.7;} 100% {transform:translateY(-100vh) translateX(100px); opacity:0;} }  
+  
+@media (max-width:768px) { h1 { font-size:2.5rem; } .grid { grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:20px; } }
+
+  </style>  
+</head>  
+<body>  
+  <div class="noise"></div>  
+  <div class="glow-effect"></div>  
+  <div class="scanlines"></div>  
+  <div class="particles" id="particles"></div>  <div class="container">  
+  <header>  
+    <h1>MARCOS TV ONLINE</h1>  
+    <div class="subtitle">EXPERIÊNCIA RADICAL DE STREAMING</div>  
+  </header>    <div class="grid">  
+    <!-- ESPN HD -->  
+    <a href="https://enz.gdplayertv.to/embed/espn-br/" onclick="openInWebView(this.href); return false;">  
+      <div class="canal">  
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">  
+        <h2>ESPN HD</h2>  
+      </div>  
+    </a>  <!-- SPORTV HD -->  
+<a href="https://enz.gdplayertv.to/embed/sportv/" onclick="openInWebView(this.href); return false;">  
+  <div class="canal">  
+    <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">  
+    <h2>SPORTV HD</h2>  
+  </div>  
+</a>  
+
+<!-- CANAL DE ESPORTE -->  
+<a href="https://enz.gdplayertv.to/channel/sport/" onclick="openInWebView(this.href); return false;">  
+  <div class="canal">  
+    <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">  
+    <h2>CANAL DE ESPORTE 1</h2>  
+  </div>  
+</a>  
+
+<!-- CANAIS DE ESPORTE -->  
+<a href="https://la14hd.com/" onclick="openInWebView(this.href); return false;">  
+  <div class="canal">  
+    <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">  
+    <h2>CANAIS DE ESPORTE 2</h2>  
+  </div>  
+</a>  
+
+<!-- TV SKY -->  
+<a href="https://embedcanais.com/" onclick="openInWebView(this.href); return false;">  
+  <div class="canal">  
+    <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">  
+    <h2>TV SKY</h2>  
+  </div>  
+</a>  
+
+<!-- PREMIERE CLUBES HD -->  
+<a href="https://la14hd.com/vivo/canales.php?stream=premiere1" onclick="openInWebView(this.href); return false;">  
+  <div class="canal">  
+    <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">  
+    <h2>PREMIERE CLUBES HD</h2>  
+  </div>  
+</a>  
+
+<!-- FILMES E SÉRIES -->  
+<a href="https://redecanais.gd/index.html" onclick="openInWebView(this.href); return false;">  
+  <div class="canal">  
+    <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">  
+    <h2>FILMES E SÉRIES</h2>  
+  </div>  
+</a>
+
+  </div>  
+</div>  <script>  
+  // Abrir links dentro do WebView  
+  function openInWebView(url) {  
+    window.location.href = url;  
+  }  
+  
+  // Criar partículas flutuantes  
+  function createParticles() {  
+    const particlesContainer = document.getElementById('particles');  
+    const colors = ['#00f3ff', '#ff00ff', '#39ff14'];  
       
-      setTimeout(() => {
-        window.location.href = url;
-      }, 1000);
-      
-      return false;
-    }
-    
-    // Criar partículas flutuantes
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const colors = ['#00f3ff', '#ff00ff', '#39ff14', '#bd00ff'];
-      
-      for (let i = 0; i < 40; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
+    for (let i = 0; i < 30; i++) {  
+      const particle = document.createElement('div');  
+      particle.classList.add('particle');  
         
-        const size = Math.random() * 5 + 2;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const posX = Math.random() * 100;
-        const delay = Math.random() * 15;
-        const duration = 10 + Math.random() * 20;
+      const size = Math.random() * 5 + 2;  
+      const color = colors[Math.floor(Math.random() * colors.length)];  
+      const posX = Math.random() * 100;  
+      const delay = Math.random() * 15;  
+      const duration = 10 + Math.random() * 20;  
         
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.background = color;
-        particle.style.left = `${posX}vw`;
-        particle.style.top = '100vh';
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.animationDuration = `${duration}s`;
+      particle.style.width = `${size}px`;  
+      particle.style.height = `${size}px`;  
+      particle.style.background = color;  
+      particle.style.left = `${posX}vw`;  
+      particle.style.top = '100vh';  
+      particle.style.animationDelay = `${delay}s`;  
+      particle.style.animationDuration = `${duration}s`;  
         
-        particlesContainer.appendChild(particle);
-      }
-    }
-    
-    // Filtro de categorias
-    function setupCategoryFilter() {
-      const categoryButtons = document.querySelectorAll('.category-btn');
-      const canals = document.querySelectorAll('.canal');
+      particlesContainer.appendChild(particle);  
+    }  
+  }  
+  
+  // Efeito de digitação no título  
+  function typeWriterEffect() {  
+    const title = document.querySelector('h1');  
+    const originalText = title.textContent;  
+    title.textContent = '';  
       
-      categoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const category = button.getAttribute('data-category');
-          
-          // Ativar botão selecionado
-          categoryButtons.forEach(btn => btn.classList.remove('active'));
-          button.classList.add('active');
-          
-          // Filtrar canais
-          canals.forEach(canal => {
-            if (category === 'all' || canal.getAttribute('data-category') === category) {
-              canal.parentElement.style.display = 'block';
-            } else {
-              canal.parentElement.style.display = 'none';
-            }
-          });
-        });
-      });
-    }
-    
-    // Busca em tempo real
-    function setupSearch() {
-      const searchInput = document.getElementById('searchInput');
-      const canals = document.querySelectorAll('.canal');
+    let i = 0;  
+    const speed = 100;  
       
-      searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
+    function type() {  
+      if (i < originalText.length) {  
+        title.textContent += originalText.charAt(i);  
+        i++;  
+        setTimeout(type, speed);  
+      }  
+    }  
+      
+    setTimeout(type, 1000);  
+  }  
+  
+  // Efeito de entrada nos cards  
+  function animateCards() {  
+    const cards = document.querySelectorAll('.canal');  
+    cards.forEach((card, index) => {  
+      card.style.opacity = '0';  
+      card.style.transform = 'translateY(50px)';  
         
-        canals.forEach(canal => {
-          const title = canal.querySelector('h2').textContent.toLowerCase();
-          const description = canal.querySelector('p').textContent.toLowerCase();
-          const tags = Array.from(canal.querySelectorAll('.canal-tag')).map(tag => tag.textContent.toLowerCase());
-          
-          if (title.includes(searchTerm) || description.includes(searchTerm) || tags.some(tag => tag.includes(searchTerm))) {
-            canal.parentElement.style.display = 'block';
-          } else {
-            canal.parentElement.style.display = 'none';
-          }
-        });
-      });
-    }
-    
-    // Efeito de digitação no título
-    function typeWriterEffect() {
-      const title = document.querySelector('h1');
-      const originalText = title.textContent;
-      title.textContent = '';
-      
-      let i = 0;
-      const speed = 100;
-      
-      function type() {
-        if (i < originalText.length) {
-          title.textContent += originalText.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        }
-      }
-      
-      setTimeout(type, 1000);
-    }
-    
-    // Efeito de entrada nos cards
-    function animateCards() {
-      const cards = document.querySelectorAll('.canal');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(50px)';
-        
-        setTimeout(() => {
-          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, 300 + (index * 100));
-      });
-    }
-    
-    // Esconder loading quando a página carregar
-    function hideLoading() {
-      setTimeout(() => {
-        const loadingModal = document.getElementById('loadingModal');
-        loadingModal.style.opacity = '0';
-        
-        setTimeout(() => {
-          loadingModal.style.display = 'none';
-        }, 500);
-      }, 2000);
-    }
-    
-    window.addEventListener('DOMContentLoaded', () => {
-      createParticles();
-      typeWriterEffect();
-      animateCards();
-      setupCategoryFilter();
-      setupSearch();
-      hideLoading();
-    });
-  </script>
-</body>
-</html> 
+      setTimeout(() => {  
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';  
+        card.style.opacity = '1';  
+        card.style.transform = 'translateY(0)';  
+      }, 300 + (index * 100));  
+    });  
+  }  
+  
+  window.addEventListener('DOMContentLoaded', () => {  
+    createParticles();  
+    typeWriterEffect();  
+    animateCards();  
+  });  
+</script>  </body>  
+</html>
