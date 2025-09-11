@@ -151,6 +151,18 @@
       text-shadow: 0 0 10px var(--neon-blue);
     }
 
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--neon-green);
+      color: #000;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
     /* Modal para exibição do player */
     .modal {
       display: none;
@@ -311,44 +323,51 @@
     </header>
 
     <div class="grid">
-      <!-- ESPN HD -->
-      <div class="canal" data-url="https://enz.gdplayertv.to/embed/espn-br/" data-name="ESPN HD" data-image="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg">
+      <!-- ESPN HD (Player Direto) -->
+      <div class="canal" data-url="https://enz.gdplayertv.to/embed/espn-br/" data-name="ESPN HD" data-image="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" data-type="player">
+        <span class="badge">PLAYER</span>
         <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">
         <h2>ESPN HD</h2>
       </div>
 
-      <!-- SPORTV HD -->
-      <div class="canal" data-url="https://enz.gdplayertv.to/embed/sportv/" data-name="SPORTV HD" data-image="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg">
+      <!-- SPORTV HD (Player Direto) -->
+      <div class="canal" data-url="https://enz.gdplayertv.to/embed/sportv/" data-name="SPORTV HD" data-image="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" data-type="player">
+        <span class="badge">PLAYER</span>
         <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">
         <h2>SPORTV HD</h2>
       </div>
 
-      <!-- CANAL DE ESPORTE -->
-      <div class="canal" data-url="https://enz.gdplayertv.to/channel/sport/" data-name="CANAL DE ESPORTE 1" data-image="https://i.ibb.co/sJyBC61j/images-7-5.jpg">
+      <!-- CANAL DE ESPORTE (Player Direto) -->
+      <div class="canal" data-url="https://enz.gdplayertv.to/channel/sport/" data-name="CANAL DE ESPORTE 1" data-image="https://i.ibb.co/sJyBC61j/images-7-5.jpg" data-type="player">
+        <span class="badge">PLAYER</span>
         <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">
         <h2>CANAL DE ESPORTE 1</h2>
       </div>
 
-      <!-- CANAIS DE ESPORTE -->
-      <div class="canal" data-url="https://la14hd.com/" data-name="CANAIS DE ESPORTE 2" data-image="https://i.ibb.co/GvfgK5Gp/download-11.jpg">
+      <!-- CANAIS DE ESPORTE (Página) -->
+      <div class="canal" data-url="https://la14hd.com/" data-name="CANAIS DE ESPORTE 2" data-image="https://i.ibb.co/GvfgK5Gp/download-11.jpg" data-type="page">
+        <span class="badge">PÁGINA</span>
         <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
         <h2>CANAIS DE ESPORTE 2</h2>
       </div>
 
-      <!-- TV SKY -->
-      <div class="canal" data-url="https://embedcanais.com/" data-name="TV SKY" data-image="https://i.ibb.co/9kDjf7ZL/download-4.jpg">
+      <!-- TV SKY (Página) -->
+      <div class="canal" data-url="https://embedcanais.com/" data-name="TV SKY" data-image="https://i.ibb.co/9kDjf7ZL/download-4.jpg" data-type="page">
+        <span class="badge">PÁGINA</span>
         <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
         <h2>TV SKY</h2>
       </div>
 
-      <!-- PREMIERE CLUBES HD -->
-      <div class="canal" data-url="https://la14hd.com/vivo/canales.php?stream=premiere1" data-name="PREMIERE CLUBES HD" data-image="https://i.ibb.co/FktyLt12/download.png">
+      <!-- PREMIERE CLUBES HD (Player Direto) -->
+      <div class="canal" data-url="https://la14hd.com/vivo/canales.php?stream=premiere1" data-name="PREMIERE CLUBES HD" data-image="https://i.ibb.co/FktyLt12/download.png" data-type="player">
+        <span class="badge">PLAYER</span>
         <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">
         <h2>PREMIERE CLUBES HD</h2>
       </div>
 
-      <!-- FILMES E SÉRIES -->
-      <div class="canal" data-url="https://redecanais.gd/index.html" data-name="FILMES E SÉRIES" data-image="https://i.ibb.co/PsbV007v/images-7-6.jpg">
+      <!-- FILMES E SÉRIES (Página) -->
+      <div class="canal" data-url="https://redecanais.gd/index.html" data-name="FILMES E SÉRIES" data-image="https://i.ibb.co/PsbV007v/images-7-6.jpg" data-type="page">
+        <span class="badge">PÁGINA</span>
         <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">
         <h2>FILMES E SÉRIES</h2>
       </div>
@@ -378,17 +397,44 @@
   <script>
     // Variáveis globais
     let currentChannelUrl = '';
+    let currentChannelType = '';
     const adUrl = "https://example.com"; // Substitua por um URL válido
 
-    // Função para mostrar a prévia do canal
+    // Detectar automaticamente se uma URL é um player
+    function isPlayerUrl(url) {
+      // Padrões de URL que indicam ser um player de vídeo
+      const playerPatterns = [
+        /\/embed\//i,
+        /\/player\//i,
+        /\/vivo\//i,
+        /stream=/i,
+        /\.m3u8/i,
+        /\.mp4/i,
+        /\.ts/i,
+        /\/live\//i,
+        /canales\.php/i
+      ];
+      
+      return playerPatterns.some(pattern => pattern.test(url));
+    }
+
+    // Função para mostrar a prévia do canal (apenas para players)
     function showChannelPreview(channelElement) {
       const channelUrl = channelElement.getAttribute('data-url');
       const channelName = channelElement.getAttribute('data-name');
       const channelImage = channelElement.getAttribute('data-image');
+      const channelType = channelElement.getAttribute('data-type');
       
       currentChannelUrl = channelUrl;
+      currentChannelType = channelType;
       
-      // Atualizar o modal com as informações do canal
+      // Se for uma página, abrir diretamente em nova janela
+      if (channelType === 'page') {
+        window.open(channelUrl, '_blank');
+        return;
+      }
+      
+      // Se for um player, mostrar o modal de preview
       document.getElementById('modal-channel-name').textContent = channelName;
       document.getElementById('preview-channel-title').textContent = channelName;
       document.getElementById('preview-channel-image').src = channelImage;
@@ -437,6 +483,19 @@
 
     // Event listeners
     document.addEventListener('DOMContentLoaded', function() {
+      // Detectar automaticamente o tipo de cada canal
+      document.querySelectorAll('.canal').forEach(canal => {
+        const url = canal.getAttribute('data-url');
+        const type = isPlayerUrl(url) ? 'player' : 'page';
+        canal.setAttribute('data-type', type);
+        
+        // Adicionar badge visual
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = type === 'player' ? 'PLAYER' : 'PÁGINA';
+        canal.appendChild(badge);
+      });
+      
       // Adicionar evento de clique aos canais (primeiro clique)
       const canalElements = document.querySelectorAll('.canal');
       canalElements.forEach(canal => {
@@ -496,4 +555,4 @@
   </script>
 </body>
 </html>
-      
+  
