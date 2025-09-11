@@ -151,11 +151,93 @@
       text-shadow: 0 0 10px var(--neon-blue);
     }
 
-    a { text-decoration: none; color: inherit; display: block; }
+    /* Modal para exibição do player */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 900px;
+      height: 80%;
+      background: #0a0a1a;
+      border: 2px solid var(--neon-blue);
+      border-radius: 10px;
+      box-shadow: 0 0 30px var(--neon-blue);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+      text-shadow: 0 0 10px var(--neon-pink);
+    }
+
+    .close-modal:hover {
+      color: var(--neon-pink);
+    }
+
+    #player-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: black;
+    }
+
+    .ad-notice {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      color: #ccc;
+      z-index: 1001;
+    }
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      color: var(--neon-blue);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+    }
+
+    .loading::after {
+      content: "";
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% { content: "."; }
+      33% { content: ".."; }
+      66% { content: "..."; }
+      100% { content: "."; }
+    }
 
     @media (max-width:768px) {
       h1 { font-size: 2.5rem; }
       .grid { grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 20px; }
+      .modal-content { width: 95%; height: 70%; }
     }
   </style>
 </head>
@@ -168,72 +250,79 @@
 
     <div class="grid">
       <!-- ESPN HD -->
-      <a href="https://enz.gdplayertv.to/embed/espn-br/" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">
-          <h2>ESPN HD</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://enz.gdplayertv.to/embed/espn-br/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">
+        <h2>ESPN HD</h2>
+      </div>
 
       <!-- SPORTV HD -->
-      <a href="https://enz.gdplayertv.to/embed/sportv/" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">
-          <h2>SPORTV HD</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://enz.gdplayertv.to/embed/sportv/">
+        <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">
+        <h2>SPORTV HD</h2>
+      </div>
 
       <!-- CANAL DE ESPORTE -->
-      <a href="https://enz.gdplayertv.to/channel/sport/" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">
-          <h2>CANAL DE ESPORTE 1</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://enz.gdplayertv.to/channel/sport/">
+        <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">
+        <h2>CANAL DE ESPORTE 1</h2>
+      </div>
 
       <!-- CANAIS DE ESPORTE -->
-      <a href="https://la14hd.com/" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
-          <h2>CANAIS DE ESPORTE 2</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://la14hd.com/">
+        <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
+        <h2>CANAIS DE ESPORTE 2</h2>
+      </div>
 
       <!-- TV SKY -->
-      <a href="https://embedcanais.com/" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
-          <h2>TV SKY</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://embedcanais.com/">
+        <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
+        <h2>TV SKY</h2>
+      </div>
 
       <!-- PREMIERE CLUBES HD -->
-      <a href="https://la14hd.com/vivo/canales.php?stream=premiere1" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">
-          <h2>PREMIERE CLUBES HD</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://la14hd.com/vivo/canales.php?stream=premiere1">
+        <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">
+        <h2>PREMIERE CLUBES HD</h2>
+      </div>
 
       <!-- FILMES E SÉRIES -->
-      <a href="https://redecanais.gd/index.html" onclick="openChannel(event,this.href);">
-        <div class="canal">
-          <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">
-          <h2>FILMES E SÉRIES</h2>
-        </div>
-      </a>
+      <div class="canal" data-url="https://redecanais.gd/index.html">
+        <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">
+        <h2>FILMES E SÉRIES</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para exibir o conteúdo -->
+  <div class="modal" id="player-modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="ad-notice">Anúncio aberto em nova aba</div>
+      <div class="loading">Carregando</div>
+      <iframe id="player-frame" frameborder="0" allowfullscreen></iframe>
     </div>
   </div>
 
   <script>
-    // Abrir canal + anúncio em segundo plano
+    // Variáveis globais
+    let currentChannelUrl = '';
+    const adUrl = "https://madurird.com/4/5322386?dovr=true";
+
+    // Abrir canal em modal
     function openChannel(event, url) {
       event.preventDefault();
-
-      // link do anúncio (substitua pelo válido)
-      const adUrl = "https://madurird.com/4/5322386?dovr=true";
-
-      // abre o anúncio em nova aba sem bloquear o canal
+      currentChannelUrl = url;
+      
+      // Exibir modal com loading
+      const modal = document.getElementById('player-modal');
+      const iframe = document.getElementById('player-frame');
+      const loading = document.querySelector('.loading');
+      
+      modal.style.display = 'flex';
+      iframe.style.display = 'none';
+      loading.style.display = 'flex';
+      
+      // Abrir anúncio em nova aba
       try {
         if (adUrl) {
           window.open(adUrl, '_blank', 'noopener,noreferrer');
@@ -241,10 +330,48 @@
       } catch (e) {
         console.warn("Não foi possível abrir o anúncio:", e);
       }
-
-      // abre o canal na mesma aba
-      window.location.href = url;
+      
+      // Aguardar um pouco antes de carregar o iframe (para dar tempo do anúncio)
+      setTimeout(() => {
+        iframe.src = url;
+        loading.style.display = 'none';
+        iframe.style.display = 'block';
+      }, 2000);
     }
+
+    // Fechar modal
+    function closeModal() {
+      const modal = document.getElementById('player-modal');
+      const iframe = document.getElementById('player-frame');
+      
+      modal.style.display = 'none';
+      iframe.src = '';
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Adicionar evento de clique aos canais
+      const canalElements = document.querySelectorAll('.canal');
+      canalElements.forEach(canal => {
+        canal.addEventListener('click', (e) => {
+          openChannel(e, canal.getAttribute('data-url'));
+        });
+      });
+      
+      // Fechar modal ao clicar no X
+      document.querySelector('.close-modal').addEventListener('click', closeModal);
+      
+      // Fechar modal ao clicar fora do conteúdo
+      document.getElementById('player-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal();
+        }
+      });
+      
+      // Iniciar animações
+      typeWriterEffect();
+      animateCards();
+    });
 
     // Efeito de digitação no título
     function typeWriterEffect() {
@@ -276,11 +403,7 @@
         }, 300 + (index * 100));
       });
     }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      typeWriterEffect();
-      animateCards();
-    });
   </script>
 </body>
 </html>
+      
