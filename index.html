@@ -175,18 +175,39 @@
       box-shadow: 0 0 30px var(--neon-blue);
       overflow: hidden;
       position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 15px;
+      background: rgba(0,0,0,0.7);
+      border-bottom: 1px solid var(--neon-blue);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      font-size: 1.2rem;
     }
 
     .close-modal {
-      position: absolute;
-      top: 10px;
-      right: 15px;
       color: white;
       font-size: 30px;
       font-weight: bold;
       cursor: pointer;
-      z-index: 1001;
       text-shadow: 0 0 10px var(--neon-pink);
+      background: none;
+      border: none;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .close-modal:hover {
@@ -195,21 +216,31 @@
 
     #player-frame {
       width: 100%;
-      height: 100%;
+      flex: 1;
       border: none;
       background: black;
     }
 
-    .ad-notice {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 12px;
-      color: #ccc;
-      z-index: 1001;
+    .watch-button {
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .watch-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-pink);
     }
 
     .loading {
@@ -234,10 +265,41 @@
       100% { content: "."; }
     }
 
+    .channel-preview {
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .channel-preview img {
+      max-width: 120px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px var(--neon-blue));
+    }
+
+    .channel-preview h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    .channel-preview p {
+      color: #ccc;
+      margin-bottom: 30px;
+      max-width: 80%;
+    }
+
     @media (max-width:768px) {
       h1 { font-size: 2.5rem; }
       .grid { grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 20px; }
       .modal-content { width: 95%; height: 70%; }
+      .channel-preview img { max-width: 80px; }
+      .channel-preview p { max-width: 95%; }
     }
   </style>
 </head>
@@ -250,43 +312,43 @@
 
     <div class="grid">
       <!-- ESPN HD -->
-      <div class="canal" data-url="https://enz.gdplayertv.to/embed/espn-br/">
+      <div class="canal" data-url="https://enz.gdplayertv.to/embed/espn-br/" data-name="ESPN HD" data-image="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg">
         <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">
         <h2>ESPN HD</h2>
       </div>
 
       <!-- SPORTV HD -->
-      <div class="canal" data-url="https://enz.gdplayertv.to/embed/sportv/">
+      <div class="canal" data-url="https://enz.gdplayertv.to/embed/sportv/" data-name="SPORTV HD" data-image="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg">
         <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">
         <h2>SPORTV HD</h2>
       </div>
 
       <!-- CANAL DE ESPORTE -->
-      <div class="canal" data-url="https://enz.gdplayertv.to/channel/sport/">
+      <div class="canal" data-url="https://enz.gdplayertv.to/channel/sport/" data-name="CANAL DE ESPORTE 1" data-image="https://i.ibb.co/sJyBC61j/images-7-5.jpg">
         <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">
         <h2>CANAL DE ESPORTE 1</h2>
       </div>
 
       <!-- CANAIS DE ESPORTE -->
-      <div class="canal" data-url="https://la14hd.com/">
+      <div class="canal" data-url="https://la14hd.com/" data-name="CANAIS DE ESPORTE 2" data-image="https://i.ibb.co/GvfgK5Gp/download-11.jpg">
         <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
         <h2>CANAIS DE ESPORTE 2</h2>
       </div>
 
       <!-- TV SKY -->
-      <div class="canal" data-url="https://embedcanais.com/">
+      <div class="canal" data-url="https://embedcanais.com/" data-name="TV SKY" data-image="https://i.ibb.co/9kDjf7ZL/download-4.jpg">
         <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
         <h2>TV SKY</h2>
       </div>
 
       <!-- PREMIERE CLUBES HD -->
-      <div class="canal" data-url="https://la14hd.com/vivo/canales.php?stream=premiere1">
+      <div class="canal" data-url="https://la14hd.com/vivo/canales.php?stream=premiere1" data-name="PREMIERE CLUBES HD" data-image="https://i.ibb.co/FktyLt12/download.png">
         <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">
         <h2>PREMIERE CLUBES HD</h2>
       </div>
 
       <!-- FILMES E SÉRIES -->
-      <div class="canal" data-url="https://redecanais.gd/index.html">
+      <div class="canal" data-url="https://redecanais.gd/index.html" data-name="FILMES E SÉRIES" data-image="https://i.ibb.co/PsbV007v/images-7-6.jpg">
         <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">
         <h2>FILMES E SÉRIES</h2>
       </div>
@@ -296,9 +358,19 @@
   <!-- Modal para exibir o conteúdo -->
   <div class="modal" id="player-modal">
     <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <div class="ad-notice">Anúncio aberto em nova aba</div>
-      <div class="loading">Carregando</div>
+      <div class="modal-header">
+        <div class="modal-title" id="modal-channel-name">Nome do Canal</div>
+        <button class="close-modal">&times;</button>
+      </div>
+      
+      <div id="channel-preview" class="channel-preview">
+        <img id="preview-channel-image" src="" alt="">
+        <h3 id="preview-channel-title">Nome do Canal</h3>
+        <p>Clique no botão abaixo para assistir este canal. Um anúncio será aberto em uma nova janela.</p>
+        <button class="watch-button" id="watch-button">Assistir Agora</button>
+      </div>
+      
+      <div class="loading" id="loading-indicator">Carregando</div>
       <iframe id="player-frame" frameborder="0" allowfullscreen></iframe>
     </div>
   </div>
@@ -306,36 +378,50 @@
   <script>
     // Variáveis globais
     let currentChannelUrl = '';
-    const adUrl = "https://madurird.com/4/5322386?dovr=true";
+    const adUrl = "https://example.com"; // Substitua por um URL válido
 
-    // Abrir canal em modal
-    function openChannel(event, url) {
-      event.preventDefault();
-      currentChannelUrl = url;
+    // Função para mostrar a prévia do canal
+    function showChannelPreview(channelElement) {
+      const channelUrl = channelElement.getAttribute('data-url');
+      const channelName = channelElement.getAttribute('data-name');
+      const channelImage = channelElement.getAttribute('data-image');
       
-      // Exibir modal com loading
-      const modal = document.getElementById('player-modal');
-      const iframe = document.getElementById('player-frame');
-      const loading = document.querySelector('.loading');
+      currentChannelUrl = channelUrl;
       
-      modal.style.display = 'flex';
-      iframe.style.display = 'none';
-      loading.style.display = 'flex';
+      // Atualizar o modal com as informações do canal
+      document.getElementById('modal-channel-name').textContent = channelName;
+      document.getElementById('preview-channel-title').textContent = channelName;
+      document.getElementById('preview-channel-image').src = channelImage;
       
-      // Abrir anúncio em nova aba
+      // Mostrar a prévia e esconder o player
+      document.getElementById('channel-preview').style.display = 'flex';
+      document.getElementById('player-frame').style.display = 'none';
+      document.getElementById('loading-indicator').style.display = 'none';
+      
+      // Exibir o modal
+      document.getElementById('player-modal').style.display = 'flex';
+    }
+
+    // Função para assistir o canal (segundo clique)
+    function watchChannel() {
+      // Esconder a prévia e mostrar loading
+      document.getElementById('channel-preview').style.display = 'none';
+      document.getElementById('loading-indicator').style.display = 'flex';
+      
+      // Abrir anúncio em nova aba (apenas se o URL for válido)
       try {
-        if (adUrl) {
+        if (adUrl && adUrl !== "https://example.com") {
           window.open(adUrl, '_blank', 'noopener,noreferrer');
         }
       } catch (e) {
         console.warn("Não foi possível abrir o anúncio:", e);
       }
       
-      // Aguardar um pouco antes de carregar o iframe (para dar tempo do anúncio)
+      // Aguardar um pouco antes de carregar o iframe
       setTimeout(() => {
-        iframe.src = url;
-        loading.style.display = 'none';
-        iframe.style.display = 'block';
+        document.getElementById('player-frame').src = currentChannelUrl;
+        document.getElementById('loading-indicator').style.display = 'none';
+        document.getElementById('player-frame').style.display = 'block';
       }, 2000);
     }
 
@@ -346,17 +432,21 @@
       
       modal.style.display = 'none';
       iframe.src = '';
+      iframe.style.display = 'none';
     }
 
     // Event listeners
     document.addEventListener('DOMContentLoaded', function() {
-      // Adicionar evento de clique aos canais
+      // Adicionar evento de clique aos canais (primeiro clique)
       const canalElements = document.querySelectorAll('.canal');
       canalElements.forEach(canal => {
-        canal.addEventListener('click', (e) => {
-          openChannel(e, canal.getAttribute('data-url'));
+        canal.addEventListener('click', () => {
+          showChannelPreview(canal);
         });
       });
+      
+      // Evento para o botão de assistir
+      document.getElementById('watch-button').addEventListener('click', watchChannel);
       
       // Fechar modal ao clicar no X
       document.querySelector('.close-modal').addEventListener('click', closeModal);
