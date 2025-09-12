@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MARCOS TV ONLINE</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@300;400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
     :root {
       --primary: #1e88e5;
-      --secondary: #0d47a1;
       --bg-dark: #0f1115;
       --bg-card: #1c1f26;
       --text-light: #f5f5f5;
@@ -38,17 +37,14 @@
     }
 
     h1 {
-      font-family:'Inter', sans-serif;
       font-size:2.8rem;
       font-weight:800;
-      color: var(--text-light);
-      margin-bottom:15px;
+      margin-bottom:10px;
     }
 
     .subtitle {
       font-size:1.1rem;
       color: var(--text-muted);
-      letter-spacing:1px;
     }
 
     .grid {
@@ -66,10 +62,6 @@
       transition: all 0.3s ease;
       cursor:pointer;
       text-align:center;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
     }
 
     .canal:hover {
@@ -80,31 +72,70 @@
 
     .canal img {
       max-width:80px;
-      height:auto;
       margin-bottom:15px;
-      transition: transform 0.3s ease;
-    }
-
-    .canal:hover img {
-      transform: scale(1.05);
     }
 
     .canal h2 {
       font-size:1rem;
       font-weight:600;
-      color: var(--text-light);
     }
 
-    a {
-      text-decoration:none;
-      color:inherit;
-      display:block;
+    a { text-decoration:none; color:inherit; display:block; }
+
+    /* Lista Marcos Sport */
+    .sport-section {
+      margin-top:60px;
     }
 
-    @media(max-width:768px) {
-      h1 { font-size:2rem; }
-      .grid { gap:15px; }
-      .canal { padding:20px 15px; }
+    .sport-header {
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    .sport-header h2 {
+      font-size:2rem;
+      font-weight:700;
+    }
+
+    .search-container {
+      display:flex;
+      justify-content:center;
+      margin-bottom:20px;
+    }
+
+    .search-container input {
+      width:100%;
+      max-width:400px;
+      padding:12px 15px 12px 40px;
+      border-radius:25px;
+      border:none;
+      font-size:1rem;
+      background-color: rgba(0,0,0,0.5);
+      color:#fff;
+      backdrop-filter: blur(5px);
+    }
+
+    .channel-list {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap:15px;
+    }
+
+    .channel-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding:15px;
+      border-radius:10px;
+      text-align:center;
+      font-weight:600;
+      cursor:pointer;
+      transition: all 0.2s ease;
+    }
+
+    .channel-item:hover {
+      transform: scale(1.05);
+      border-color: var(--primary);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
   </style>
 </head>
@@ -115,41 +146,18 @@
       <div class="subtitle">Streaming ao vivo em alta qualidade</div>
     </header>
 
+    <!-- Grid principal -->
     <div class="grid">
-      <!-- ESPN HD -->
-      <a href="https://enz.gdplayertv.to/embed/espn-br/" target="_blank">
-        <div class="canal">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN HD">
-          <h2>ESPN HD</h2>
-        </div>
-      </a>
-
-      <!-- SPORTV HD -->
-      <a href="https://enz.gdplayertv.to/embed/sportv/" target="_blank">
-        <div class="canal">
-          <img src="https://i.ibb.co/wFBg29MX/BcgnPbz.jpg" alt="SPORTV HD">
-          <h2>SPORTV HD</h2>
-        </div>
-      </a>
-
-      <!-- CANAL DE ESPORTE -->
-      <a href="https://enz.gdplayertv.to/channel/sport/" target="_blank">
-        <div class="canal">
-          <img src="https://i.ibb.co/sJyBC61j/images-7-5.jpg" alt="CANAL DE ESPORTE">
-          <h2>CANAL DE ESPORTE 1</h2>
-        </div>
-      </a>
-
       <!-- CANAIS DE ESPORTE -->
       <a href="https://la14hd.com/" target="_blank">
         <div class="canal">
           <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
-          <h2>CANAIS DE ESPORTE 2</h2>
+          <h2>CANAIS DE ESPORTE</h2>
         </div>
       </a>
 
       <!-- TV SKY -->
-      <a href="https://embedtv.org/" target="_blank">
+      <a href="https://embedcanais.com/" target="_blank">
         <div class="canal">
           <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
           <h2>TV SKY</h2>
@@ -172,6 +180,530 @@
         </div>
       </a>
     </div>
+
+    <!-- Seção Marcos Sport -->
+    <div class="sport-section">
+      <div class="sport-header">
+        <h2>Marcos Sport</h2>
+      </div>
+
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar canal..." oninput="filterChannels()">
+      </div>
+
+      <div class="channel-list" id="channelList"></div>
+    </div>
   </div>
+
+  <script>
+    // Cole seus links aqui (um por linha)
+    const rawLinks = `
+https://enz.gdplayertv.to/embed/bein-sports-3/
+https://enz.gdplayertv.to/embed/bein-sports-3/
+https://enz.gdplayertv.to/embed/
+https://enz.gdplayertv.to/embed/abu-dhabi-sports-2/
+https://enz.gdplayertv.to/embed/acc-network/
+https://enz.gdplayertv.to/embed/alkass-4/
+https://enz.gdplayertv.to/embed/alkass-1/
+https://enz.gdplayertv.to/embed/alkass-3/
+https://enz.gdplayertv.to/embed/alkass-2/
+https://enz.gdplayertv.to/embed/all-sports/
+https://enz.gdplayertv.to/embed/arena-sport-1-premium-bh/
+https://enz.gdplayertv.to/embed/arena-sport-1-premium/
+https://enz.gdplayertv.to/embed/arena-sport-1-bh/
+https://enz.gdplayertv.to/embed/arena-sport-1-croatia/
+https://enz.gdplayertv.to/embed/arena-sport-1/
+https://enz.gdplayertv.to/embed/arena-sport-1x2/
+https://enz.gdplayertv.to/embed/arena-sport-2-premium-bh/
+https://enz.gdplayertv.to/embed/arena-sport-2-premium/
+https://enz.gdplayertv.to/embed/arena-sport-2-bh/
+https://enz.gdplayertv.to/embed/arena-sport-2-croatia/
+https://enz.gdplayertv.to/embed/arena-sport-2/
+https://enz.gdplayertv.to/embed/arena-sport-3-premium-bh/
+https://enz.gdplayertv.to/embed/arena-sport-3-premium/
+https://enz.gdplayertv.to/embed/arena-sport-3-bh/
+https://enz.gdplayertv.to/embed/arena-sport-3-croatia/
+https://enz.gdplayertv.to/embed/arena-sport-3/
+https://enz.gdplayertv.to/embed/arena-sport-4-bh/
+https://enz.gdplayertv.to/embed/arena-sport-4-croatia/
+https://enz.gdplayertv.to/embed/arena-sport-4/
+https://enz.gdplayertv.to/embed/arena-sport-5-bh/
+https://enz.gdplayertv.to/embed/arena-sport-6-bh/
+https://enz.gdplayertv.to/embed/arryadia-tv/
+https://enz.gdplayertv.to/embed/astro-arena-2/
+https://enz.gdplayertv.to/embed/astro-arena-bola-2/
+https://enz.gdplayertv.to/embed/astro-arena-bola/
+https://enz.gdplayertv.to/embed/astro-arena/
+https://enz.gdplayertv.to/embed/astro-cricket/
+https://enz.gdplayertv.to/embed/astro-supersport-2/
+https://enz.gdplayertv.to/embed/astro-supersport/
+https://enz.gdplayertv.to/embed/astro-supersport-3/
+https://enz.gdplayertv.to/embed/astro-supersport-4/
+https://enz.gdplayertv.to/embed/bahrain-sport-1/
+https://enz.gdplayertv.to/embed/bahrain-sport-2/
+https://enz.gdplayertv.to/embed/bandsports-tv/
+https://enz.gdplayertv.to/embed/bein-sports-1-english/
+https://enz.gdplayertv.to/embed/bein-sports-au/
+https://enz.gdplayertv.to/embed/bein-sports-1-french/
+https://enz.gdplayertv.to/embed/bein-sports-1-de/
+https://enz.gdplayertv.to/embed/bein-sports-1/
+https://enz.gdplayertv.to/embed/bein-sports-1-mena/
+https://enz.gdplayertv.to/embed/bein-sports-1-th/
+https://enz.gdplayertv.to/embed/bein-sports-1-tr/
+https://enz.gdplayertv.to/embed/bein-sports-2-english/
+https://enz.gdplayertv.to/embed/bein-sports-2-au/
+https://enz.gdplayertv.to/embed/bein-sports-2-french/
+https://enz.gdplayertv.to/embed/bein-sports-2/
+https://enz.gdplayertv.to/embed/bein-sports-2-my/
+https://enz.gdplayertv.to/embed/bein-sports-2-mena/
+https://enz.gdplayertv.to/embed/bein-sports-2-th/
+https://enz.gdplayertv.to/embed/bein-sports-2-tr/
+https://enz.gdplayertv.to/embed/bein-sports-3-au/
+https://enz.gdplayertv.to/embed/bein-sports-3-french/
+https://enz.gdplayertv.to/embed/bein-sports-3/
+https://enz.gdplayertv.to/embed/bein-sports-3-my/
+https://enz.gdplayertv.to/embed/bein-sports-3-mena/
+https://enz.gdplayertv.to/embed/bein-sports-3-th/
+https://enz.gdplayertv.to/embed/bein-sports-3-tr/
+https://enz.gdplayertv.to/embed/bein-sports-4/
+https://enz.gdplayertv.to/embed/bein-sports-4-my/
+https://enz.gdplayertv.to/embed/bein-sports-4-mena/
+https://enz.gdplayertv.to/embed/bein-sports-4-th/
+https://enz.gdplayertv.to/embed/bein-sports-4-tr/
+https://enz.gdplayertv.to/embed/bein-sports-5/
+https://enz.gdplayertv.to/embed/bein-sports-5-mena/
+https://enz.gdplayertv.to/embed/bein-sports-5-th/
+https://enz.gdplayertv.to/embed/bein-sports-5-tr/
+https://enz.gdplayertv.to/embed/bein-sports-6-mena/
+https://enz.gdplayertv.to/embed/bein-sports-6-th/
+https://enz.gdplayertv.to/embed/bein-sports-7-mena/
+https://enz.gdplayertv.to/embed/bein-sports-7-th/
+https://enz.gdplayertv.to/embed/bein-sports-8-mena/
+https://enz.gdplayertv.to/embed/bein-sports-9-mena/
+https://enz.gdplayertv.to/embed/bein-sports-max-4-fr/
+https://enz.gdplayertv.to/embed/bein-sports-max-5-fr/
+https://enz.gdplayertv.to/embed/bein-sports-max-6-fr/
+https://enz.gdplayertv.to/embed/bein-sports-max-7-fr/
+https://enz.gdplayertv.to/embed/bein-sports-max-8-fr/
+https://enz.gdplayertv.to/embed/bein-sports-max-9-fr/
+https://enz.gdplayertv.to/embed/bein-sports/
+https://enz.gdplayertv.to/embed/bein-sports-ga/
+https://enz.gdplayertv.to/embed/bein-sports-usa/
+https://enz.gdplayertv.to/embed/bein-sports-xtra-en-espanol/
+https://enz.gdplayertv.to/embed/bein-sports-xtra/
+https://enz.gdplayertv.to/embed/bek-sports-east/
+https://enz.gdplayertv.to/embed/bek-sports-west/
+https://enz.gdplayertv.to/embed/bellator-mma/
+https://enz.gdplayertv.to/embed/benfica-tv/
+https://enz.gdplayertv.to/embed/btn-usa/
+https://enz.gdplayertv.to/embed/blue-sport/
+https://enz.gdplayertv.to/embed/blue-sport-2/
+https://enz.gdplayertv.to/embed/bnt-3-tv/
+https://enz.gdplayertv.to/embed/bs-fishing-vision/
+https://enz.gdplayertv.to/embed/canal-11-tv/
+https://enz.gdplayertv.to/embed/canal-plus-foot/
+https://enz.gdplayertv.to/embed/canal-plus-tv/
+https://enz.gdplayertv.to/embed/canal-plus-live-1-tv/
+https://enz.gdplayertv.to/embed/canal-plus-live-2-tv/
+https://enz.gdplayertv.to/embed/canal-plus-live-tv/
+https://enz.gdplayertv.to/embed/canal-plus-sport-1-afrique/
+https://enz.gdplayertv.to/embed/canal-plus-sport-2-afrique/
+https://enz.gdplayertv.to/embed/canal-plus-sport-2-pl/
+https://enz.gdplayertv.to/embed/canal-plus-sport-3-afrique/
+https://enz.gdplayertv.to/embed/canal-plus-sport-3-pl/
+https://enz.gdplayertv.to/embed/canal-plus-sport-360/
+https://enz.gdplayertv.to/embed/canal-plus-sport-4-afrique/
+https://enz.gdplayertv.to/embed/canal-plus-sport-5-pl/
+https://enz.gdplayertv.to/embed/canal-plus-sport/
+https://enz.gdplayertv.to/embed/canal-plus-sport-pl/
+https://enz.gdplayertv.to/embed/cbc-sport/
+https://enz.gdplayertv.to/embed/cbs-sports-network/
+https://enz.gdplayertv.to/embed/cctv16/
+https://enz.gdplayertv.to/embed/cctv5/
+https://enz.gdplayertv.to/embed/cctv5-plus/
+https://enz.gdplayertv.to/embed/combate/
+https://enz.gdplayertv.to/embed/cosmote-sport-1/
+https://enz.gdplayertv.to/embed/cosmote-sport-2/
+https://enz.gdplayertv.to/embed/cosmote-sport-3/
+https://enz.gdplayertv.to/embed/cosmote-sport-4/
+https://enz.gdplayertv.to/embed/cosmote-sport-5/
+https://enz.gdplayertv.to/embed/cosmote-sport-6/
+https://enz.gdplayertv.to/embed/cosmote-sport-7/
+https://enz.gdplayertv.to/embed/cosmote-sport-8/
+https://enz.gdplayertv.to/embed/cosmote-sport-9/
+https://enz.gdplayertv.to/embed/cricket-gold-tv/
+https://enz.gdplayertv.to/embed/cytavision-sports-1/
+https://enz.gdplayertv.to/embed/cytavision-sports-2/
+https://enz.gdplayertv.to/embed/cytavision-sports-3/
+https://enz.gdplayertv.to/embed/cytavision-sports-4/
+https://enz.gdplayertv.to/embed/cytavision-sports-5/
+https://enz.gdplayertv.to/embed/cytavision-sports-6/
+https://enz.gdplayertv.to/embed/cytavision-sports-7/
+https://enz.gdplayertv.to/embed/dazn-1-de/
+https://enz.gdplayertv.to/embed/dazn-1-es/
+https://enz.gdplayertv.to/embed/dazn-2-de/
+https://enz.gdplayertv.to/embed/dazn-2-es/
+https://enz.gdplayertv.to/embed/dazn-3-es/
+https://enz.gdplayertv.to/embed/dazn-4-pt/
+https://enz.gdplayertv.to/embed/dazn-4-es/
+https://enz.gdplayertv.to/embed/dazn-combat/
+https://enz.gdplayertv.to/embed/dazn-f1/
+https://enz.gdplayertv.to/embed/dazn-fast-plus/
+https://enz.gdplayertv.to/embed/dazn-laliga/
+https://enz.gdplayertv.to/embed/dazn-rise/
+https://enz.gdplayertv.to/embed/dazn-womens-football/
+https://enz.gdplayertv.to/embed/movistar-deportes-2/
+https://enz.gdplayertv.to/embed/movistar-deportes-3/
+https://enz.gdplayertv.to/embed/movistar-deportes-4/
+https://enz.gdplayertv.to/embed/movistar-deportes/
+https://enz.gdplayertv.to/embed/diema-sport-2-tv/
+https://enz.gdplayertv.to/embed/diema-sport-3-tv/
+https://enz.gdplayertv.to/embed/diema-sport-tv/
+https://enz.gdplayertv.to/embed/digi-sport-1/
+https://enz.gdplayertv.to/embed/digi-sport-2/
+https://enz.gdplayertv.to/embed/digi-sport-3/
+https://enz.gdplayertv.to/embed/digi-sport-4/
+https://enz.gdplayertv.to/embed/discovery-turbo/
+https://enz.gdplayertv.to/embed/dubai-racing-2-tv/
+https://enz.gdplayertv.to/embed/dubai-racing-3-tv/
+https://enz.gdplayertv.to/embed/dubai-racing-1-tv/
+https://enz.gdplayertv.to/embed/dubai-sports-1/
+https://enz.gdplayertv.to/embed/dubai-sports-2/
+https://enz.gdplayertv.to/embed/dubai-sports-3/
+https://enz.gdplayertv.to/embed/dunia-games/
+https://enz.gdplayertv.to/embed/edgesport-tv/
+https://enz.gdplayertv.to/embed/eleven-sports-1-pl/
+https://enz.gdplayertv.to/embed/eleven-sports-1-pt/
+https://enz.gdplayertv.to/embed/eleven-sports-2-pl/
+https://enz.gdplayertv.to/embed/eleven-sports-2-pt/
+https://enz.gdplayertv.to/embed/eleven-sports-3-pl/
+https://enz.gdplayertv.to/embed/eleven-sports-3-pt/
+https://enz.gdplayertv.to/embed/eleven-sports-4-pt/
+https://enz.gdplayertv.to/embed/eleven-sports-5-pt/
+https://enz.gdplayertv.to/embed/eleven-sports-6-pt/
+https://enz.gdplayertv.to/embed/espn2-sur/
+https://enz.gdplayertv.to/embed/espn-2/
+https://enz.gdplayertv.to/embed/espn-2-br/
+https://enz.gdplayertv.to/embed/espn-3-ag/
+https://enz.gdplayertv.to/embed/espn-3-br/
+https://enz.gdplayertv.to/embed/espn-4-br/
+https://enz.gdplayertv.to/embed/espn-deportes/
+https://enz.gdplayertv.to/embed/espn-premium/
+https://enz.gdplayertv.to/embed/espn-sur/
+https://enz.gdplayertv.to/embed/espn/
+https://enz.gdplayertv.to/embed/espn-br/
+https://enz.gdplayertv.to/embed/espn4-nl/
+https://enz.gdplayertv.to/embed/espnu-tv/
+https://enz.gdplayertv.to/embed/etv2/
+https://enz.gdplayertv.to/embed/eurosport/
+https://enz.gdplayertv.to/embed/eurosport-1-fr/
+https://enz.gdplayertv.to/embed/eurosport-1-it/
+https://enz.gdplayertv.to/embed/eurosport-1-pl/
+https://enz.gdplayertv.to/embed/eurosport-1-pt/
+https://enz.gdplayertv.to/embed/eurosport-1-es/
+https://enz.gdplayertv.to/embed/eurosport-1/
+https://enz.gdplayertv.to/embed/eurosport-2-fr/
+https://enz.gdplayertv.to/embed/eurosport-2-it/
+https://enz.gdplayertv.to/embed/eurosport-2-pl/
+https://enz.gdplayertv.to/embed/eurosport-2-pt/
+https://enz.gdplayertv.to/embed/eurosport-2-es/
+https://enz.gdplayertv.to/embed/eurosport-2/
+https://enz.gdplayertv.to/embed/eurosport-my/
+https://enz.gdplayertv.to/embed/fifa-plus-tv/
+https://enz.gdplayertv.to/embed/fight-sports-tv/
+https://enz.gdplayertv.to/embed/fighting-tv-samurai/
+https://enz.gdplayertv.to/embed/f1-tv/
+https://enz.gdplayertv.to/embed/fox-cricket/
+https://enz.gdplayertv.to/embed/fox-deportes/
+https://enz.gdplayertv.to/embed/fox-league-502/
+https://enz.gdplayertv.to/embed/fox-soccer-plus/
+https://enz.gdplayertv.to/embed/fox-sports-1/
+https://enz.gdplayertv.to/embed/fox-sports-2/
+https://enz.gdplayertv.to/embed/fox-sports-503/
+https://enz.gdplayertv.to/embed/fox-footy/
+https://enz.gdplayertv.to/embed/fox-sports-505-au/
+https://enz.gdplayertv.to/embed/fox-sports-premium-mx/
+https://enz.gdplayertv.to/embed/fox-sports-ar/
+https://enz.gdplayertv.to/embed/fuji-tv-next/
+https://enz.gdplayertv.to/embed/fuji-tv-one/
+https://enz.gdplayertv.to/embed/gs-tv/
+https://enz.gdplayertv.to/embed/gaora-sports-tv/
+https://enz.gdplayertv.to/embed/golf-channel/
+https://enz.gdplayertv.to/embed/golf-channel-my/
+https://enz.gdplayertv.to/embed/golf-network-tv/
+https://enz.gdplayertv.to/embed/green-channel/
+https://enz.gdplayertv.to/embed/horse-country-tv/
+https://enz.gdplayertv.to/embed/igo-shogi-channel/
+https://enz.gdplayertv.to/embed/infinity-plus/
+https://enz.gdplayertv.to/embed/itv4/
+https://enz.gdplayertv.to/embed/j-sports-1/
+https://enz.gdplayertv.to/embed/j-sports-2/
+https://enz.gdplayertv.to/embed/j-sports-3/
+https://enz.gdplayertv.to/embed/j-sports-4/
+https://enz.gdplayertv.to/embed/jtbc-golf/
+https://enz.gdplayertv.to/embed/la-1-tv/
+https://enz.gdplayertv.to/embed/laliga-hypermotion/
+https://enz.gdplayertv.to/embed/laliga-live-hypermotion/
+https://enz.gdplayertv.to/embed/laliga-plus/
+https://enz.gdplayertv.to/embed/laliga-tv/
+https://enz.gdplayertv.to/embed/movistar-laliga/
+https://enz.gdplayertv.to/embed/movistar-liga-de-campeones/
+https://enz.gdplayertv.to/embed/m4-sport/
+https://enz.gdplayertv.to/embed/magenta-sport/
+https://enz.gdplayertv.to/embed/match-football-1/
+https://enz.gdplayertv.to/embed/match-football-2/
+https://enz.gdplayertv.to/embed/match-football-3/
+https://enz.gdplayertv.to/embed/match-premier/
+https://enz.gdplayertv.to/embed/match-tv/
+https://enz.gdplayertv.to/embed/max-sport-1-bg/
+https://enz.gdplayertv.to/embed/max-sport-1-hr/
+https://enz.gdplayertv.to/embed/max-sport-2-bg/
+https://enz.gdplayertv.to/embed/max-sport-2-hr/
+https://enz.gdplayertv.to/embed/max-sport-3-bg/
+https://enz.gdplayertv.to/embed/max-sport-4-bg/
+https://enz.gdplayertv.to/embed/mlb-network/
+https://enz.gdplayertv.to/embed/mlb-tv/
+https://enz.gdplayertv.to/embed/motorvision-tv/
+https://enz.gdplayertv.to/embed/mutv/
+https://enz.gdplayertv.to/embed/nba/
+https://enz.gdplayertv.to/embed/nba-usa/
+https://enz.gdplayertv.to/embed/nbc-sports/
+https://enz.gdplayertv.to/embed/nfl/
+https://enz.gdplayertv.to/embed/nfl-network/
+https://enz.gdplayertv.to/embed/nhl-network/
+https://enz.gdplayertv.to/embed/ntv-g-plus/
+https://enz.gdplayertv.to/embed/nova-sport-bg/
+https://enz.gdplayertv.to/embed/nova-sport-rs/
+https://enz.gdplayertv.to/embed/nova-sports-1-gr/
+https://enz.gdplayertv.to/embed/nova-sports-2-gr/
+https://enz.gdplayertv.to/embed/nova-sports-3-gr/
+https://enz.gdplayertv.to/embed/nova-sports-4-gr/
+https://enz.gdplayertv.to/embed/nova-sports-5-gr/
+https://enz.gdplayertv.to/embed/nova-sports-6-gr/
+https://enz.gdplayertv.to/embed/nova-sports-premier-league/
+https://enz.gdplayertv.to/embed/nova-sports-prime/
+https://enz.gdplayertv.to/embed/nova-sports-start/
+https://enz.gdplayertv.to/embed/oman-sports/
+https://enz.gdplayertv.to/embed/one-sports/
+https://enz.gdplayertv.to/embed/one-sports-plus/
+https://enz.gdplayertv.to/embed/onesoccer/
+https://enz.gdplayertv.to/embed/pfl-mma/
+https://enz.gdplayertv.to/embed/pga-tour-tv/
+https://enz.gdplayertv.to/embed/polsat-sport-3/
+https://enz.gdplayertv.to/embed/polsat-sport-extra/
+https://enz.gdplayertv.to/embed/polsat-sport-premium-1/
+https://enz.gdplayertv.to/embed/polsat-sport/
+https://enz.gdplayertv.to/embed/premier-league/
+https://enz.gdplayertv.to/embed/premier-sports-1/
+https://enz.gdplayertv.to/embed/premier-sports-2/
+https://enz.gdplayertv.to/embed/premier-sports-my/
+https://enz.gdplayertv.to/embed/premiere-tv/
+https://enz.gdplayertv.to/embed/prima-sport-1/
+https://enz.gdplayertv.to/embed/prima-sport-2/
+https://enz.gdplayertv.to/embed/prima-sport-3/
+https://enz.gdplayertv.to/embed/prima-sport-4/
+https://enz.gdplayertv.to/embed/ptv-sports/
+https://enz.gdplayertv.to/embed/qazsport-tv/
+https://enz.gdplayertv.to/embed/racingcom-tv/
+https://enz.gdplayertv.to/embed/rai-sport-tv/
+https://enz.gdplayertv.to/embed/rally-tv/
+https://enz.gdplayertv.to/embed/real-madrid-tv/
+https://enz.gdplayertv.to/embed/red-bull-tv/
+https://enz.gdplayertv.to/embed/rmc-sport-1/
+https://enz.gdplayertv.to/embed/rmc-sport-2/
+https://enz.gdplayertv.to/embed/rte2-tv/
+https://enz.gdplayertv.to/embed/rtv-sport/
+https://enz.gdplayertv.to/embed/sbs-golf-2/
+https://enz.gdplayertv.to/embed/sbs-golf/
+https://enz.gdplayertv.to/embed/sharjah-sports/
+https://enz.gdplayertv.to/embed/sky-a-tv-jp/
+https://enz.gdplayertv.to/embed/sky-sport-24/
+https://enz.gdplayertv.to/embed/sky-sport-251/
+https://enz.gdplayertv.to/embed/sky-sport-252/
+https://enz.gdplayertv.to/embed/sky-sport-253/
+https://enz.gdplayertv.to/embed/sky-sport-254/
+https://enz.gdplayertv.to/embed/sky-sport-255/
+https://enz.gdplayertv.to/embed/sky-sport-256/
+https://enz.gdplayertv.to/embed/sky-sport-257/
+https://enz.gdplayertv.to/embed/sky-sport-arena/
+https://enz.gdplayertv.to/embed/sky-sport-bundesliga-1/
+https://enz.gdplayertv.to/embed/sky-sport-bundesliga-2/
+https://enz.gdplayertv.to/embed/sky-sport-bundesliga-4/
+https://enz.gdplayertv.to/embed/sky-sport-calcio/
+https://enz.gdplayertv.to/embed/sky-sport-f1-de/
+https://enz.gdplayertv.to/embed/sky-sport-f1/
+https://enz.gdplayertv.to/embed/sky-sport-golf/
+https://enz.gdplayertv.to/embed/sky-sport-max/
+https://enz.gdplayertv.to/embed/sky-sport-mix/
+https://enz.gdplayertv.to/embed/sky-sport-motogp/
+https://enz.gdplayertv.to/embed/sky-sport-nba/
+https://enz.gdplayertv.to/embed/sky-sport-tennis/
+https://enz.gdplayertv.to/embed/sky-sport-uno/
+https://enz.gdplayertv.to/embed/sky-sports-action/
+https://enz.gdplayertv.to/embed/sky-sports-arena/
+https://enz.gdplayertv.to/embed/sky-sports-cricket/
+https://enz.gdplayertv.to/embed/skysports-f1/
+https://enz.gdplayertv.to/embed/sky-sports-football/
+https://enz.gdplayertv.to/embed/sky-sports-golf/
+https://enz.gdplayertv.to/embed/sky-sports-main-event/
+https://enz.gdplayertv.to/embed/sky-sports-mix/
+https://enz.gdplayertv.to/embed/sky-sports-news/
+https://enz.gdplayertv.to/embed/sky-sports-premier-league/
+https://enz.gdplayertv.to/embed/sky-sports-racing/
+https://enz.gdplayertv.to/embed/sky-sports-tennis/
+https://enz.gdplayertv.to/embed/soccer-channel/
+https://enz.gdplayertv.to/embed/sony-sports-ten-1/
+https://enz.gdplayertv.to/embed/sony-sports-ten-2/
+https://enz.gdplayertv.to/embed/sony-sports-ten-3/
+https://enz.gdplayertv.to/embed/sony-sports-ten-4/
+https://enz.gdplayertv.to/embed/sony-sports-ten-5/
+https://enz.gdplayertv.to/embed/speed-sport-1-tv/
+https://enz.gdplayertv.to/embed/sport-1-plus/
+https://enz.gdplayertv.to/embed/sportklub-1/
+https://enz.gdplayertv.to/embed/sportklub-2/
+https://enz.gdplayertv.to/embed/sportklub-3/
+https://enz.gdplayertv.to/embed/sportklub-4/
+https://enz.gdplayertv.to/embed/sport-tv-plus/
+https://enz.gdplayertv.to/embed/sport-tv1/
+https://enz.gdplayertv.to/embed/sport-tv2/
+https://enz.gdplayertv.to/embed/sport-tv3/
+https://enz.gdplayertv.to/embed/sport-tv4/
+https://enz.gdplayertv.to/embed/sport-tv5/
+https://enz.gdplayertv.to/embed/sports-live-plus/
+https://enz.gdplayertv.to/embed/sports18-tv/
+https://enz.gdplayertv.to/embed/sportstars2-tv/
+https://enz.gdplayertv.to/embed/sportstars3-tv/
+https://enz.gdplayertv.to/embed/sportstars4-tv/
+https://enz.gdplayertv.to/embed/sportstars-tv/
+https://enz.gdplayertv.to/embed/sportv-2/
+https://enz.gdplayertv.to/embed/sportv-3/
+https://enz.gdplayertv.to/embed/sportv/
+https://enz.gdplayertv.to/embed/spotv/
+https://enz.gdplayertv.to/embed/spotv2-my/
+https://enz.gdplayertv.to/embed/spotv-my/
+https://enz.gdplayertv.to/embed/spotv-stadia/
+https://enz.gdplayertv.to/embed/spotv2/
+https://enz.gdplayertv.to/embed/ssc-1/
+https://enz.gdplayertv.to/embed/ssc-2/
+https://enz.gdplayertv.to/embed/ssc-3/
+https://enz.gdplayertv.to/embed/ssc-4/
+https://enz.gdplayertv.to/embed/ssc-5/
+https://enz.gdplayertv.to/embed/ssc-extra-1/
+https://enz.gdplayertv.to/embed/ssc-extra-2/
+https://enz.gdplayertv.to/embed/ssc-extra-3/
+https://enz.gdplayertv.to/embed/star-sports-1/
+https://enz.gdplayertv.to/embed/star-sports-2/
+https://enz.gdplayertv.to/embed/star-sports-select-1/
+https://enz.gdplayertv.to/embed/star-sports-select-2/
+https://enz.gdplayertv.to/embed/starzplay-criclife-1/
+https://enz.gdplayertv.to/embed/starzplay-criclife-2/
+https://enz.gdplayertv.to/embed/starzplay-criclife-3/
+https://enz.gdplayertv.to/embed/sukan-rtm/
+https://enz.gdplayertv.to/embed/supersport-action/
+https://enz.gdplayertv.to/embed/supersport-cricket/
+https://enz.gdplayertv.to/embed/supersport-football/
+https://enz.gdplayertv.to/embed/supersport-golf/
+https://enz.gdplayertv.to/embed/supersport-grandstand/
+https://enz.gdplayertv.to/embed/supersport-laliga/
+https://enz.gdplayertv.to/embed/supersport-maximo-1/
+https://enz.gdplayertv.to/embed/supersport-motorsport/
+https://enz.gdplayertv.to/embed/supersport-premier-league/
+https://enz.gdplayertv.to/embed/supersport-psl/
+https://enz.gdplayertv.to/embed/supersport-rugby/
+https://enz.gdplayertv.to/embed/supersport-tennis/
+https://enz.gdplayertv.to/embed/supersport-variety-1/
+https://enz.gdplayertv.to/embed/supersport-variety-2/
+https://enz.gdplayertv.to/embed/supersport-variety-3/
+https://enz.gdplayertv.to/embed/supersport-variety-4/
+https://enz.gdplayertv.to/embed/t2-tennis-channel/
+https://enz.gdplayertv.to/embed/ten-sports-pk/
+https://enz.gdplayertv.to/embed/tennis-channel/
+https://enz.gdplayertv.to/embed/tivibu-spor/
+https://enz.gdplayertv.to/embed/tna-wrestling/
+https://enz.gdplayertv.to/embed/tnt-sports-1/
+https://enz.gdplayertv.to/embed/tnt-sports-2/
+https://enz.gdplayertv.to/embed/tnt-sports-3/
+https://enz.gdplayertv.to/embed/tnt-sports-4/
+https://enz.gdplayertv.to/embed/tnt-sports-ag/
+https://enz.gdplayertv.to/embed/tnt-sports-cl/
+https://enz.gdplayertv.to/embed/trace-sport-stars/
+https://enz.gdplayertv.to/embed/true-premier-football-1/
+https://enz.gdplayertv.to/embed/true-premier-football-2/
+https://enz.gdplayertv.to/embed/true-premier-football-3/
+https://enz.gdplayertv.to/embed/true-sports-1/
+https://enz.gdplayertv.to/embed/true-sports-2/
+https://enz.gdplayertv.to/embed/true-sports-3/
+https://enz.gdplayertv.to/embed/true-sports-4/
+https://enz.gdplayertv.to/embed/tsn1/
+https://enz.gdplayertv.to/embed/tsn2/
+https://enz.gdplayertv.to/embed/tsn3/
+https://enz.gdplayertv.to/embed/tsn4/
+https://enz.gdplayertv.to/embed/tsn5/
+https://enz.gdplayertv.to/embed/tudn-tv/
+https://enz.gdplayertv.to/embed/tv2-sport-1/
+https://enz.gdplayertv.to/embed/tv-2-sport/
+https://enz.gdplayertv.to/embed/tv2-sport-premium/
+https://enz.gdplayertv.to/embed/tv-2-sport-x/
+https://enz.gdplayertv.to/embed/tv3-max/
+https://enz.gdplayertv.to/embed/tv3-sport/
+https://enz.gdplayertv.to/embed/tv4-fotboll/
+https://enz.gdplayertv.to/embed/tva-sports-2/
+https://enz.gdplayertv.to/embed/tva-sports/
+https://enz.gdplayertv.to/embed/tvn-sports/
+https://enz.gdplayertv.to/embed/tvp-sport/
+https://enz.gdplayertv.to/embed/tvri-sport/
+https://enz.gdplayertv.to/embed/tyc-sports/
+https://enz.gdplayertv.to/embed/unifi-sports/
+https://enz.gdplayertv.to/embed/usa-network/
+https://enz.gdplayertv.to/embed/usee-sports-2/
+https://enz.gdplayertv.to/embed/usee-sports/
+https://enz.gdplayertv.to/embed/v-sport-1/
+https://enz.gdplayertv.to/embed/v-sport-1-sw/
+https://enz.gdplayertv.to/embed/v-sport-2/
+https://enz.gdplayertv.to/embed/v-sport-3/
+https://enz.gdplayertv.to/embed/v-sport-football/
+https://enz.gdplayertv.to/embed/v-sport-golf/
+https://enz.gdplayertv.to/embed/v-sport-motor/
+https://enz.gdplayertv.to/embed/v-sport-premium/
+    `;
+
+    const links = rawLinks.trim().split('\n').map(l => l.trim()).filter(l => l !== '');
+
+    const channels = links.map(link => {
+      try {
+        const urlObj = new URL(link);
+        const pathParts = urlObj.pathname.split('/').filter(p=>p!=='');
+        let name = pathParts[pathParts.length-1] || "Canal";
+        name = name.replace(/-/g,' ').toUpperCase();
+        return {name:name, url:link};
+      } catch(e){
+        return {name:"Canal Inválido", url:link};
+      }
+    });
+
+    const listContainer = document.getElementById('channelList');
+
+    function renderChannels(){
+      listContainer.innerHTML = '';
+      channels.forEach(ch=>{
+        const div = document.createElement('div');
+        div.className = 'channel-item';
+        div.textContent = ch.name;
+        div.addEventListener('click',()=> window.open(ch.url,'_blank'));
+        listContainer.appendChild(div);
+      });
+    }
+
+    function filterChannels(){
+      const val = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.channel-item');
+      items.forEach((item, idx)=>{
+        const chName = channels[idx].name.toLowerCase();
+        item.style.display = chName.includes(val)?'block':'none';
+      });
+    }
+
+    renderChannels();
+  </script>
 </body>
 </html>
