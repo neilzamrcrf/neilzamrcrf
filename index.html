@@ -868,41 +868,52 @@ https://enz.gdplayertv.to/embed/v-sport-premium/
 
     const links = rawLinks.trim().split('\n').map(l => l.trim()).filter(l => l !== '');
 
-    const channels = links.map(link => {
-      try {
-        const urlObj = new URL(link);
-        const pathParts = urlObj.pathname.split('/').filter(p=>p!=='');
-        let name = pathParts[pathParts.length-1] || "Canal";
-        name = name.replace(/-/g,' ').toUpperCase();
-        return {name:name, url:link};
-      } catch(e){
-        return {name:"Canal Inválido", url:link};
+  const channels = links.map(link => {
+    try {
+      const urlObj = new URL(link);
+      let name = "";
+
+      // Se tiver parâmetro ?stream=xxx
+      if (urlObj.searchParams.has("stream")) {
+        name = urlObj.searchParams.get("stream");
+      } else {
+        // Senão pega a última parte do path
+        const pathParts = urlObj.pathname.split('/').filter(p => p !== '');
+        name = pathParts[pathParts.length - 1] || "Canal";
       }
+
+      // Formata o nome bonitinho
+      name = name.replace(/[-_]/g,' ').toUpperCase();
+
+      return { name: name, url: link };
+    } catch (e) {
+      return { name: "CANAL INVÁLIDO", url: link };
+    }
+  });
+
+  const listContainer = document.getElementById('channelList');
+
+  function renderChannels(){
+    listContainer.innerHTML = '';
+    channels.forEach(ch=>{
+      const div = document.createElement('div');
+      div.className = 'channel-item';
+      div.textContent = ch.name;
+      div.addEventListener('click',()=> window.open(ch.url,'_blank'));
+      listContainer.appendChild(div);
     });
+  }
 
-    const listContainer = document.getElementById('channelList');
+  function filterChannels(){
+    const val = document.getElementById('searchInput').value.toLowerCase();
+    const items = document.querySelectorAll('.channel-item');
+    items.forEach((item, idx)=>{
+      const chName = channels[idx].name.toLowerCase();
+      item.style.display = chName.includes(val)?'block':'none';
+    });
+  }
 
-    function renderChannels(){
-      listContainer.innerHTML = '';
-      channels.forEach(ch=>{
-        const div = document.createElement('div');
-        div.className = 'channel-item';
-        div.textContent = ch.name;
-        div.addEventListener('click',()=> window.open(ch.url,'_blank'));
-        listContainer.appendChild(div);
-      });
-    }
-
-    function filterChannels(){
-      const val = document.getElementById('searchInput').value.toLowerCase();
-      const items = document.querySelectorAll('.channel-item');
-      items.forEach((item, idx)=>{
-        const chName = channels[idx].name.toLowerCase();
-        item.style.display = chName.includes(val)?'block':'none';
-      });
-    }
-
-    renderChannels();
-  </script>
+  renderChannels();
+</script>
 </body>
 </html>
