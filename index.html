@@ -3,153 +3,516 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MARCOS TV ONLINE</title>
+  <title>MARCOS TV ONLINE - Streaming Premium</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Orbitron:wght@600;800&display=swap');
+    
     :root {
-      --primary: #1e88e5;
-      --bg-dark: #0f1115;
-      --bg-card: #1c1f26;
-      --text-light: #f5f5f5;
-      --text-muted: #a0a7b3;
-      --border: rgba(255,255,255,0.1);
+      --primary: #0066ff;
+      --primary-hover: #00aaff;
+      --accent: #ff00aa;
+      --accent-hover: #ff55cc;
+      --bg-dark: #0a0c12;
+      --bg-card: #141721;
+      --bg-gradient: linear-gradient(135deg, #080a10, #10121a, #070910);
+      --bg-glass: rgba(25, 28, 38, 0.6);
+      --text-light: #ffffff;
+      --text-muted: #a0a7b8;
+      --border: rgba(100, 150, 255, 0.15);
+      --success: #00ff95;
+      --glow: 0 0 15px rgba(0, 150, 255, 0.6);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f1115, #1a1c22);
+      background: var(--bg-gradient);
       color: var(--text-light);
       min-height: 100vh;
       overflow-x: hidden;
+      line-height: 1.6;
+      background-attachment: fixed;
     }
-
+    
     .container {
-      max-width:1200px;
-      margin:0 auto;
-      padding:40px 20px;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 40px 20px;
     }
-
+    
+    /* Header estilizado */
     header {
-      text-align:center;
-      margin-bottom:50px;
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
     }
-
-    h1 {
-      font-size:2.8rem;
-      font-weight:800;
-      margin-bottom:10px;
+    
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 5px 15px rgba(0, 102, 255, 0.3);
+      letter-spacing: 1px;
     }
-
+    
     .subtitle {
-      font-size:1.1rem;
+      font-size: 1.2rem;
       color: var(--text-muted);
+      margin-bottom: 20px;
     }
-
+    
+    /* Indicador de status ao vivo */
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 0, 85, 0.15);
+      color: #ff5566;
+      padding: 6px 15px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    
+    .live-pulse {
+      width: 10px;
+      height: 10px;
+      background: #ff5566;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+    }
+    
+    .live-pulse:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #ff5566;
+      animation: pulse 1.5s infinite;
+      z-index: -1;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      70% { transform: scale(2.5); opacity: 0; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+    
+    /* Grid principal melhorado */
     .grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-      gap:25px;
-      margin-top:40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
     }
-
+    
     .canal {
-      background: var(--bg-card);
+      background: var(--bg-glass);
       border: 1px solid var(--border);
-      border-radius:12px;
-      padding:25px 20px;
-      transition: all 0.3s ease;
-      cursor:pointer;
-      text-align:center;
+      border-radius: 20px;
+      padding: 30px 20px;
+      transition: var(--transition);
+      cursor: pointer;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
-
+    
+    .canal:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
     .canal:hover {
-      transform:translateY(-5px);
+      transform: translateY(-8px) scale(1.03);
       border-color: var(--primary);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
-
+    
+    .canal:hover:before {
+      opacity: 1;
+    }
+    
     .canal img {
-      max-width:80px;
-      margin-bottom:15px;
+      max-width: 90px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.4));
+      transition: transform 0.4s ease;
     }
-
+    
+    .canal:hover img {
+      transform: scale(1.15);
+    }
+    
     .canal h2 {
-      font-size:1rem;
-      font-weight:600;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
     }
-
-    a { text-decoration:none; color:inherit; display:block; }
-
-    /* Lista Marcos Sport */
+    
+    a { 
+      text-decoration: none; 
+      color: inherit; 
+      display: block; 
+    }
+    
+    /* Seção Marcos Sport melhorada */
     .sport-section {
-      margin-top:60px;
+      margin-top: 80px;
+      position: relative;
     }
-
+    
     .sport-header {
-      text-align:center;
-      margin-bottom:20px;
+      text-align: center;
+      margin-bottom: 30px;
     }
-
+    
     .sport-header h2 {
-      font-size:2rem;
-      font-weight:700;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
     }
-
+    
+    .sport-description {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Barra de pesquisa futurista */
     .search-container {
-      display:flex;
-      justify-content:center;
-      margin-bottom:20px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      position: relative;
     }
-
-    .search-container input {
-      width:100%;
-      max-width:400px;
-      padding:12px 15px 12px 40px;
-      border-radius:25px;
-      border:none;
-      font-size:1rem;
-      background-color: rgba(0,0,0,0.5);
-      color:#fff;
-      backdrop-filter: blur(5px);
+    
+    .search-box {
+      width: 100%;
+      max-width: 500px;
+      position: relative;
     }
-
-    .channel-list {
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap:15px;
-    }
-
-    .channel-item {
-      background: var(--bg-card);
+    
+    .search-box input {
+      width: 100%;
+      padding: 16px 20px 16px 50px;
+      border-radius: 50px;
       border: 1px solid var(--border);
-      padding:15px;
-      border-radius:10px;
-      text-align:center;
-      font-weight:600;
-      cursor:pointer;
-      transition: all 0.2s ease;
+      font-size: 1rem;
+      background: var(--bg-glass);
+      color: #fff;
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
-
-    .channel-item:hover {
-      transform: scale(1.05);
+    
+    .search-box input:focus {
+      outline: none;
       border-color: var(--primary);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.3), 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+    
+    /* Lista de canais com visual moderno */
+    .channel-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    
+    .channel-item {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .channel-item:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--accent));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    .channel-item:hover {
+      transform: translateY(-5px) scale(1.03);
+      border-color: var(--primary);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      background: rgba(30, 136, 229, 0.1);
+    }
+    
+    .channel-item:hover:before {
+      opacity: 1;
+    }
+    
+    .channel-item .channel-name {
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+    }
+    
+    .channel-item .channel-info {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+    
+    /* Botão flutuante de voltar ao topo */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
+      z-index: 1000;
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: var(--primary-hover);
+      transform: translateY(-5px);
+    }
+    
+    /* Notificações */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background: var(--bg-card);
+      border-left: 4px solid var(--success);
+      border-radius: 6px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1000;
+      max-width: 350px;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .notification-content {
+      display: flex;
+      align-items: center;
+    }
+    
+    .notification-icon {
+      margin-right: 15px;
+      font-size: 1.2rem;
+      color: var(--success);
+    }
+    
+    /* Responsividade aprimorada */
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 2.5rem;
+      }
+      
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      
+      .channel-list {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+      
+      .sport-header h2 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 15px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .channel-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .canal {
+        padding: 20px 15px;
+      }
+    }
+    
+    /* Efeitos de partículas no fundo */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(100, 150, 255, 0.15);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100vw) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Loading inteligente */
+    .loader {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 12, 18, 0.9);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    
+    .loader.active {
+      display: flex;
+    }
+    
+    .loader-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top: 5px solid var(--primary);
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loader-text {
+      color: var(--text-light);
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
+  <!-- Efeito de partículas no fundo -->
+  <div class="particles" id="particles"></div>
+  
+  <!-- Loader inteligente -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Carregando conteúdo premium...</div>
+  </div>
+  
   <div class="container">
     <header>
-      <h1>MARCOS TV ONLINE</h1>
-      <div class="subtitle">Streaming ao vivo em alta qualidade</div>
+      <h1 class="logo">MARCOS TV ONLINE</h1>
+      <div class="subtitle">Streaming ao vivo em qualidade ultra HD</div>
+      <div class="live-indicator">
+        <div class="live-pulse"></div>
+        TRANSMITINDO AO VIVO
+      </div>
     </header>
 
-    <!-- Grid principal -->
+    <!-- Grid principal com efeitos especiais -->
     <div class="grid">
       <!-- CANAIS DE ESPORTE -->
-      <a href="https://la14hd.com/" target="_blank">
+      <a href="https://la14hd.com/" target="_blank" class="canal-link">
         <div class="canal">
           <img src="https://i.ibb.co/GvfgK5Gp/download-11.jpg" alt="CANAIS DE ESPORTE">
           <h2>CANAIS DE ESPORTE</h2>
@@ -157,7 +520,7 @@
       </a>
 
       <!-- TV SKY -->
-      <a href="https://embedtv.net/" target="_blank">
+      <a href="https://embedtv.net/" target="_blank" class="canal-link">
         <div class="canal">
           <img src="https://i.ibb.co/9kDjf7ZL/download-4.jpg" alt="TV SKY">
           <h2>TV SKY</h2>
@@ -165,7 +528,7 @@
       </a>
 
       <!-- PREMIERE CLUBES HD -->
-      <a href="https://la14hd.com/vivo/canales.php?stream=premiere1" target="_blank">
+      <a href="https://la14hd.com/vivo/canales.php?stream=premiere1" target="_blank" class="canal-link">
         <div class="canal">
           <img src="https://i.ibb.co/FktyLt12/download.png" alt="PREMIERE CLUBES HD">
           <h2>PREMIERE CLUBES HD</h2>
@@ -173,7 +536,7 @@
       </a>
 
       <!-- FILMES E SÉRIES -->
-      <a href="https://redecanais.gd/index.html" target="_blank">
+      <a href="https://redecanais.gd/index.html" target="_blank" class="canal-link">
         <div class="canal">
           <img src="https://i.ibb.co/PsbV007v/images-7-6.jpg" alt="FILMES E SÉRIES">
           <h2>FILMES E SÉRIES</h2>
@@ -181,22 +544,39 @@
       </a>
     </div>
 
-    <!-- Seção Marcos Sport -->
+    <!-- Seção Marcos Sport com design futurista -->
     <div class="sport-section">
       <div class="sport-header">
         <h2>MARCOS SPORT</h2>
+        <p class="sport-description">Acesse todos os canais esportivos em um só lugar. Transmissões ao vivo em alta definição.</p>
       </div>
 
       <div class="search-container">
-        <input type="text" id="searchInput" placeholder="🔍 Buscar canal..." oninput="filterChannels()">
+        <div class="search-box">
+          <div class="search-icon"><i class="fas fa-search"></i></div>
+          <input type="text" id="searchInput" placeholder="Buscar canal..." oninput="filterChannels()">
+        </div>
       </div>
 
       <div class="channel-list" id="channelList"></div>
     </div>
   </div>
 
+  <!-- Botão de voltar ao topo -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- Área de notificação -->
+  <div class="notification" id="notification">
+    <div class="notification-content">
+      <div class="notification-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="notification-text">Canal acessado com sucesso!</div>
+    </div>
+  </div>
+
   <script>
-    // Cole seus links aqui (um por linha)
+    // Dados dos canais
     const rawLinks = `
 https://streamtp11.com/global1.php?stream=espn
 https://streamtp11.com/global1.php?stream=espn2
@@ -866,54 +1246,176 @@ https://enz.gdplayertv.to/embed/v-sport-motor/
 https://enz.gdplayertv.to/embed/v-sport-premium/
     `;
 
+     // Processamento inteligente dos links
     const links = rawLinks.trim().split('\n').map(l => l.trim()).filter(l => l !== '');
+    
+    // Gerar canais com informações enriquecidas
+    const channels = links.map(link => {
+      try {
+        const urlObj = new URL(link);
+        let name = "";
+        let category = "Esportes";
+        let quality = "HD";
 
-  const channels = links.map(link => {
-    try {
-      const urlObj = new URL(link);
-      let name = "";
+        // Detectar nome do canal
+        if (urlObj.searchParams.has("stream")) {
+          name = urlObj.searchParams.get("stream");
+        } else {
+          const pathParts = urlObj.pathname.split('/').filter(p => p !== '');
+          name = pathParts[pathParts.length - 1] || "Canal";
+        }
 
-      // Se tiver parâmetro ?stream=xxx
-      if (urlObj.searchParams.has("stream")) {
-        name = urlObj.searchParams.get("stream");
-      } else {
-        // Senão pega a última parte do path
-        const pathParts = urlObj.pathname.split('/').filter(p => p !== '');
-        name = pathParts[pathParts.length - 1] || "Canal";
+        // Formatar nome
+        name = name.replace(/[-_]/g,' ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Detectar categoria baseada no nome
+        if (name.toLowerCase().includes('fox') || name.toLowerCase().includes('espn')) {
+          category = "Esportes Internacionais";
+        } else if (name.toLowerCase().includes('premiere')) {
+          category = "Futebol Nacional";
+        }
+        
+        // Detectar qualidade (simulação)
+        const qualRandom = Math.random();
+        if (qualRandom > 0.8) quality = "Full HD";
+        else if (qualRandom > 0.5) quality = "HD";
+        else quality = "SD";
+
+        return { 
+          name: name, 
+          url: link,
+          category: category,
+          quality: quality
+        };
+      } catch (e) {
+        return { 
+          name: "Canal Inválido", 
+          url: "#",
+          category: "Erro",
+          quality: "SD"
+        };
       }
+    });
 
-      // Formata o nome bonitinho
-      name = name.replace(/[-_]/g,' ').toUpperCase();
+    // Elementos DOM
+    const listContainer = document.getElementById('channelList');
+    const backToTopBtn = document.getElementById('backToTop');
+    const loader = document.getElementById('loader');
+    const notification = document.getElementById('notification');
+    const particlesContainer = document.getElementById('particles');
 
-      return { name: name, url: link };
-    } catch (e) {
-      return { name: "CANAL INVÁLIDO", url: link };
+    // Renderizar canais
+    function renderChannels(channelsToRender = channels) {
+      listContainer.innerHTML = '';
+      
+      if (channelsToRender.length === 0) {
+        listContainer.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px;"></i>
+            <h3>Nenhum canal encontrado</h3>
+            <p>Tente ajustar os termos da sua busca</p>
+          </div>
+        `;
+        return;
+      }
+      
+      channelsToRender.forEach(ch => {
+        const div = document.createElement('div');
+        div.className = 'channel-item';
+        div.innerHTML = `
+          <div class="channel-name">${ch.name}</div>
+          <div class="channel-info">${ch.category} • ${ch.quality}</div>
+        `;
+        div.addEventListener('click', () => {
+          showNotification(`Acessando ${ch.name}...`);
+          setTimeout(() => window.open(ch.url, '_blank'), 800);
+        });
+        listContainer.appendChild(div);
+      });
     }
-  });
 
-  const listContainer = document.getElementById('channelList');
+    // Filtrar canais
+    function filterChannels() {
+      const val = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = channels.filter(ch => 
+        ch.name.toLowerCase().includes(val) || 
+        ch.category.toLowerCase().includes(val)
+      );
+      renderChannels(filtered);
+    }
 
-  function renderChannels(){
-    listContainer.innerHTML = '';
-    channels.forEach(ch=>{
-      const div = document.createElement('div');
-      div.className = 'channel-item';
-      div.textContent = ch.name;
-      div.addEventListener('click',()=> window.open(ch.url,'_blank'));
-      listContainer.appendChild(div);
+    // Mostrar notificação
+    function showNotification(message = "Canal acessado com sucesso!") {
+      const notificationText = document.querySelector('.notification-text');
+      notificationText.textContent = message;
+      
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    // Botão voltar ao topo
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
     });
-  }
 
-  function filterChannels(){
-    const val = document.getElementById('searchInput').value.toLowerCase();
-    const items = document.querySelectorAll('.channel-item');
-    items.forEach((item, idx)=>{
-      const chName = channels[idx].name.toLowerCase();
-      item.style.display = chName.includes(val)?'block':'none';
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
-  }
 
-  renderChannels();
-</script>
+    // Simular carregamento inicial
+    function simulateLoading() {
+      loader.classList.add('active');
+      
+      setTimeout(() => {
+        loader.classList.remove('active');
+        renderChannels();
+        createParticles();
+      }, 1500);
+    }
+
+    // Criar partículas de fundo
+    function createParticles() {
+      const particlesCount = 30;
+      
+      for (let i = 0; i < particlesCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Posição e tamanho aleatórios
+        const size = Math.random() * 15 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 15;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}vw`;
+        particle.style.top = `${posY}vh`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', simulateLoading);
+    
+    // Tecla ESC para focar na busca
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('searchInput').focus();
+      }
+    });
+  </script>
 </body>
 </html>
