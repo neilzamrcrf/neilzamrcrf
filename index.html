@@ -12,6 +12,7 @@
             --card-bg: rgba(255, 255, 255, 0.04);
             --text-main: #ffffff;
             --text-dim: #b0b0b0;
+            --accent: #ffff00;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -37,13 +38,21 @@
         }
         .header p { font-size: 10px; color: var(--primary); letter-spacing: 5px; margin-top: 8px; font-weight: bold; text-transform: uppercase; opacity: 0.9; }
 
-        .search-box { position: sticky; top: 15px; z-index: 999; margin-bottom: 35px; }
+        .search-box { position: sticky; top: 15px; z-index: 999; margin-bottom: 25px; }
         #search {
             width: 100%; padding: 18px 25px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(15, 15, 15, 0.9); color: #fff; font-size: 16px; backdrop-filter: blur(15px);
             box-shadow: 0 15px 45px rgba(0,0,0,0.8); transition: 0.3s;
         }
-        #search:focus { border-color: var(--primary); box-shadow: 0 0 25px rgba(0, 255, 0, 0.3); }
+
+        /* Seção de Agenda Fixa */
+        .agenda-container {
+            margin-bottom: 35px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 25px;
+            border: 1px dashed rgba(0, 255, 0, 0.2);
+        }
 
         .cat-section { margin-bottom: 45px; animation: fadeInUp 0.8s ease-out forwards; }
         .cat-title { 
@@ -65,6 +74,10 @@
             transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
+        /* Destaque para Agenda */
+        .card.agenda-card { border-color: var(--accent); }
+        .card.agenda-card .icon-circle { background: rgba(255, 255, 0, 0.1); color: var(--accent); }
+
         .icon-circle {
             width: 48px; height: 48px; background: rgba(255, 255, 255, 0.03);
             border-radius: 16px; display: flex; align-items: center; justify-content: center;
@@ -72,7 +85,7 @@
         }
         .card:hover .icon-circle { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
 
-        .name { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; width: 100%; word-wrap: break-word; }
+        .name { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; width: 100%; }
         .source-tag { font-size: 7px; color: var(--primary); opacity: 0.6; margin-top: 5px; letter-spacing: 1px; }
         
         .hidden { display: none; }
@@ -84,31 +97,49 @@
 
 <div class="header">
     <h1>MARCOTV</h1>
-    <p>CENTRAL DE CANAIS DUPLA-FONTE</p>
+    <p>O MÁXIMO EM STREAMING VIP</p>
 </div>
 
 <div class="search-box">
-    <input type="text" id="search" placeholder="Pesquisar em todos os canais..." oninput="filtrar()">
+    <input type="text" id="search" placeholder="Pesquisar canal ou evento..." oninput="filtrar()">
+</div>
+
+<div class="agenda-container">
+    <div class="cat-title">📅 AGENDA ESPORTIVA</div>
+    <div class="grid">
+        <a href="https://reidoscanais.ooo/agenda" class="card agenda-card">
+            <div class="icon-circle">⚽</div>
+            <span class="name">FUTEBOL AO VIVO 1</span>
+            <span class="source-tag">AGENDA</span>
+        </a>
+        <a href="https://la14hd.com//eventos/" class="card agenda-card">
+            <div class="icon-circle">⚽</div>
+            <span class="name">FUTEBOL AO VIVO 2</span>
+            <span class="source-tag">AGENDA</span>
+        </a>
+        <a href="https://tvacabo.top/esporte.html" class="card agenda-card">
+            <div class="icon-circle">⚽</div>
+            <span class="name">FUTEBOL AO VIVO 3</span>
+            <span class="source-tag">AGENDA</span>
+        </a>
+    </div>
 </div>
 
 <div id="categorias-container"></div>
 
 <script>
-    // FONTES DE URL
     const urlRedecanais = "https://redecanaistv.cafe/player3/ch.php?canal=";
     const urlEmbed = "https://embedcanais.com/";
 
-    // LISTA ORIGINAL REDECANAIS
     const redecanais = {
-        "⚽ ESPORTES": ["bandsports", "canaloff", "cazetv", "combate", "dazn", "dazn1", "dazn2", "dazn3", "dazn4", "espn", "espn2", "espn3", "espn4", "espn5", "espn6", "nossofutebol", "nsports", "premiereclubes", "premiere2", "premiere3", "premiere4", "premiere5", "premiere6", "premiere7", "premiere8", "sportv1", "sportv2", "sportv3", "xsports", "hbomax1", "hbomax2", "hbomax3", "hbomax4", "hbomax5", "hbomax6", "hbomax7", "hbomax8", "primevideo1", "primevideo2", "primevideo3", "disneyplus1", "disneyplus2", "disneyplus3", "disneyplus4", "paramountplus1", "paramountplus2", "paramountplus3", "paramountplus4"],
+        "⚽ ESPORTES": ["bandsports", "canaloff", "cazetv", "combate", "dazn", "dazn1", "dazn2", "dazn3", "dazn4", "espn", "espn2", "espn3", "espn4", "espn5", "espn6", "nossofutebol", "nsports", "premiereclubes", "premiere2", "premiere3", "premiere4", "premiere5", "premiere6", "premiere7", "premiere8", "sportv", "sportv2", "sportv3", "xsports", "hbomax1", "hbomax2", "hbomax3", "hbomax4", "hbomax5", "hbomax6", "hbomax7", "hbomax8", "primevideo1", "primevideo2", "primevideo3", "disneyplus1", "disneyplus2", "disneyplus3", "disneyplus4", "paramountplus1", "paramountplus2", "paramountplus3", "paramountplus4"],
         "🎬 FILMES E SÉRIES": ["paramountplus", "ae", "amc", "axn", "cinemax", "hbo", "hbo2", "hbofamily", "hbomundi", "hboplus", "hbopop", "hbosignature", "hboxtreme", "megapix", "paramountnetwork", "sonychannel", "space", "studiouniversal", "telecineaction", "telecinecult", "telecinefun", "telecinepipoca", "telecinepremium", "telecinetouch", "tntnovelas", "tntseries", "universaltv", "warner"],
         "📺 VARIEDADES E ABERTOS": ["amazonprimevideo", "amazonprime", "globoplaynovelas", "bandsp", "globomg", "globorj", "globors", "globosp", "recordmg", "recordrj", "recordsp", "redetv", "sbtsp", "tvcultura", "adultswim", "animalplanet", "comedycentral", "discoverychannel", "discoveryhomehealth", "investigationdiscovery", "discoveryscience", "discoverytheater", "discoveryturbo", "discoveryworld", "foodnetwork", "gnt", "hgtv", "history", "history2", "mtv", "multishow", "bandnews", "cnnbrasil", "globonews", "jovempannews", "recordnews"],
         "🧒 KIDS": ["cartoonito", "cartoonnetwork", "discoverykids", "dreamworks", "gloob", "gloobinho", "nickelodeon", "nickjr", "tooncast"]
     };
 
-    // LISTA ORIGINAL EMBEDCANAIS
     const embedCanais = {
-        "⚽ ESPORTES": ["bandsp", "bandsports", "canalgoat", "cazetv", "combate", "dazn", "espn", "espn2", "espn3", "espn4", "espn5", "espn6", "nossofutebol", "premiere", "premiere2", "premiere3", "premiere4", "premiere5", "premiere6", "premiere7", "premiere8", "sportv", "sportv2", "sportv3", "ufcfightpass", "nsports", "xsports"],
+        "⚽ ESPORTES": ["bandsp", "bandsports", "canalgoat", "cazetv", "combate", "dazn", "espn", "espn2", "espn3", "espn4", "espn5", "espn6", "nossofutebol", "premiere", "premiere2", "premiere3", "premiere4", "premiere5", "premiere6", "premiere7", "premiere8", "sportv1", "sportv2", "sportv3", "ufcfightpass", "nsports", "xsports"],
         "🎬 FILMES E SÉRIES": ["amc", "axn", "cinemax", "hbo", "hbo2", "hbofamily", "hbomundi", "hboplus", "hbopop", "hbosignature", "hboxtreme", "max", "megapix", "paramountnetwork", "sonychannel", "space", "studiouniversal", "tcaction", "tccult", "tcfun", "tcpipoca", "tcpremium", "tctouch", "tnt", "tntnovelas", "tntseries", "universaltv", "warner", "aee", "lifetime"],
         "📺 VARIEDADES E ABERTOS": ["adultswim", "animalplanet", "bandnews", "cancaonova", "cnnbrasil", "comedycentral", "discoverychannel", "discoveryhh", "discoveryid", "discoverykids", "discoveryscience", "discoverytheater", "discoveryturbo", "discoveryworld", "disneyplus", "estreladacasa1", "estreladacasa2", "estreladacasa3", "estreladacasa4", "estreladacasa5", "foodnetwork", "globodf", "globomg", "globonews", "globoplaynovelas", "globorj", "globors", "globosp", "gloob", "gloobinho", "gnt", "hgtv", "history", "history2", "jovempannews", "mtv", "multishow", "nickelodeon", "nickjr", "novotempo", "paieterno", "recordmg", "recordnews", "recordrj", "recordsp", "redegospel", "redevida", "redetv", "sbtsp", "tvaparecida", "tvcultura", "tvevangelizar", "amazonprimevideo"],
         "🧒 KIDS": ["cartoonito", "cartoonnetwork", "tooncast"]
@@ -116,12 +147,9 @@
 
     const icons = { "⚽ ESPORTES": "⚽", "🎬 FILMES E SÉRIES": "🍿", "📺 VARIEDADES E ABERTOS": "🎥", "🧒 KIDS": "🎈" };
 
-    const container = document.getElementById('categorias-container');
-
-    // Função para renderizar
     function render() {
-        // Unir as chaves das categorias
-        const categorias = [...new Set([...Object.keys(redecanais), ...Object.keys(embedCanais)])];
+        const container = document.getElementById('categorias-container');
+        const categorias = ["⚽ ESPORTES", "🎬 FILMES E SÉRIES", "📺 VARIEDADES E ABERTOS", "🧒 KIDS"];
 
         categorias.forEach(cat => {
             const section = document.createElement('div');
@@ -129,20 +157,17 @@
             section.innerHTML = `<div class="cat-title">${cat}</div><div class="grid"></div>`;
             const grid = section.querySelector('.grid');
 
-            // 1. Adicionar canais da RedeCanais
             if(redecanais[cat]) {
                 redecanais[cat].forEach(canal => {
-                    grid.appendChild(createCard(canal, urlRedecanais + canal, icons[cat], "REDE"));
+                    grid.appendChild(createCard(canal, urlRedecanais + canal, icons[cat], "VIP 1"));
                 });
             }
 
-            // 2. Adicionar canais do EmbedCanais
             if(embedCanais[cat]) {
                 embedCanais[cat].forEach(canal => {
-                    grid.appendChild(createCard(canal, urlEmbed + canal + "/", icons[cat], "EMBED"));
+                    grid.appendChild(createCard(canal, urlEmbed + canal + "/", icons[cat], "VIP 2"));
                 });
             }
-
             container.appendChild(section);
         });
     }
@@ -152,14 +177,8 @@
         card.className = 'card';
         card.href = url;
         card.target = "_self";
-        
         let cleanName = name.toUpperCase().replace(/[-_]/g, ' ');
-        
-        card.innerHTML = `
-            <div class="icon-circle">${icon}</div>
-            <span class="name">${cleanName}</span>
-            <span class="source-tag">${source}</span>
-        `;
+        card.innerHTML = `<div class="icon-circle">${icon}</div><span class="name">${cleanName}</span><span class="source-tag">${source}</span>`;
         return card;
     }
 
@@ -176,4 +195,4 @@
 </script>
 
 </body>
-</html>
+                                               </html>
