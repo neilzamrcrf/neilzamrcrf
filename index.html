@@ -50,16 +50,15 @@
             font-size: 14px; color: var(--primary); font-weight: 900; margin: 0 0 20px 10px; 
             text-transform: uppercase; display: flex; align-items: center; letter-spacing: 3px;
         }
-        .cat-title i { margin-right: 15px; font-style: normal; font-size: 22px; }
         .cat-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(to right, var(--primary-glow), transparent); margin-left: 20px; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 15px; }
 
         .card { 
             background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px; padding: 25px 10px; text-align: center; text-decoration: none; 
+            border-radius: 24px; padding: 20px 10px; text-align: center; text-decoration: none; 
             color: var(--text-dim); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; align-items: center; position: relative;
+            display: flex; flex-direction: column; align-items: center; position: relative; min-height: 120px;
         }
         .card:hover {
             background: rgba(0, 255, 0, 0.08); border-color: var(--primary); color: #fff;
@@ -67,13 +66,14 @@
         }
 
         .icon-circle {
-            width: 52px; height: 52px; background: rgba(255, 255, 255, 0.03);
-            border-radius: 18px; display: flex; align-items: center; justify-content: center;
-            margin-bottom: 15px; font-size: 26px; transition: 0.4s;
+            width: 48px; height: 48px; background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 12px; font-size: 24px; transition: 0.4s;
         }
-        .card:hover .icon-circle { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); transform: rotate(-10deg); }
+        .card:hover .icon-circle { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
 
-        .name { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .name { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; width: 100%; word-wrap: break-word; }
+        .source-tag { font-size: 7px; color: var(--primary); opacity: 0.6; margin-top: 5px; letter-spacing: 1px; }
         
         .hidden { display: none; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -84,227 +84,95 @@
 
 <div class="header">
     <h1>MARCOTV</h1>
-    <p>O MÁXIMO EM STREAMING</p>
+    <p>CENTRAL DE CANAIS DUPLA-FONTE</p>
 </div>
 
 <div class="search-box">
-    <input type="text" id="search" placeholder="Buscar canal no MARCOTV..." oninput="filtrar()">
+    <input type="text" id="search" placeholder="Pesquisar em todos os canais..." oninput="filtrar()">
 </div>
 
 <div id="categorias-container"></div>
 
 <script>
-    // --- CONFIGURAÇÃO DE FONTES DE DADOS ---
-    const baseUrl = "https://redecanaistv.cafe/player3/ch.php?canal=";
-    
-    // 1. DADOS REDECANAIS
-    const redecanaisData = {
+    // FONTES DE URL
+    const urlRedecanais = "https://redecanaistv.cafe/player3/ch.php?canal=";
+    const urlEmbed = "https://embedcanais.com/";
+
+    // LISTA ORIGINAL REDECANAIS
+    const redecanais = {
         "⚽ ESPORTES": ["bandsports", "canaloff", "cazetv", "combate", "dazn", "dazn1", "dazn2", "dazn3", "dazn4", "espn", "espn2", "espn3", "espn4", "espn5", "espn6", "nossofutebol", "nsports", "premiereclubes", "premiere2", "premiere3", "premiere4", "premiere5", "premiere6", "premiere7", "premiere8", "sportv1", "sportv2", "sportv3", "xsports", "hbomax1", "hbomax2", "hbomax3", "hbomax4", "hbomax5", "hbomax6", "hbomax7", "hbomax8", "primevideo1", "primevideo2", "primevideo3", "disneyplus1", "disneyplus2", "disneyplus3", "disneyplus4", "paramountplus1", "paramountplus2", "paramountplus3", "paramountplus4"],
         "🎬 FILMES E SÉRIES": ["paramountplus", "ae", "amc", "axn", "cinemax", "hbo", "hbo2", "hbofamily", "hbomundi", "hboplus", "hbopop", "hbosignature", "hboxtreme", "megapix", "paramountnetwork", "sonychannel", "space", "studiouniversal", "telecineaction", "telecinecult", "telecinefun", "telecinepipoca", "telecinepremium", "telecinetouch", "tntnovelas", "tntseries", "universaltv", "warner"],
         "📺 VARIEDADES E ABERTOS": ["amazonprimevideo", "amazonprime", "globoplaynovelas", "bandsp", "globomg", "globorj", "globors", "globosp", "recordmg", "recordrj", "recordsp", "redetv", "sbtsp", "tvcultura", "adultswim", "animalplanet", "comedycentral", "discoverychannel", "discoveryhomehealth", "investigationdiscovery", "discoveryscience", "discoverytheater", "discoveryturbo", "discoveryworld", "foodnetwork", "gnt", "hgtv", "history", "history2", "mtv", "multishow", "bandnews", "cnnbrasil", "globonews", "jovempannews", "recordnews"],
         "🧒 KIDS": ["cartoonito", "cartoonnetwork", "discoverykids", "dreamworks", "gloob", "gloobinho", "nickelodeon", "nickjr", "tooncast"]
     };
 
-    // 2. LISTA DE LINKS DIRETOS (RADICAL)
-    const rawLinks = `
-https://la14hd.com/vivo/canales.php?stream=premiere1
-https://embedcanais.com/adultswim
-https://embedcanais.com/aee
-https://embedcanais.com/amc
-https://embedcanais.com/animalplanet
-https://embedcanais.com/axn
-https://embedcanais.com/bandnews
-https://embedcanais.com/bandsp
-https://embedcanais.com/bandsports
-https://embedcanais.com/canalgoat
-https://embedcanais.com/cancaonova
-https://embedcanais.com/cartoonito
-https://embedcanais.com/cartoonnetwork
-https://embedcanais.com/cazetv
-https://embedcanais.com/cinemax
-https://embedcanais.com/cnnbrasil
-https://embedcanais.com/combate
-https://embedcanais.com/comedycentral
-https://embedcanais.com/dazn
-https://embedcanais.com/discoverychannel
-https://embedcanais.com/discoveryhh
-https://embedcanais.com/discoveryid
-https://embedcanais.com/discoverykids
-https://embedcanais.com/discoveryscience
-https://embedcanais.com/discoverytheater
-https://embedcanais.com/discoveryturbo
-https://embedcanais.com/discoveryworld
-https://embedcanais.com/disneyplus
-https://embedcanais.com/espn
-https://embedcanais.com/espn2
-https://embedcanais.com/espn3
-https://embedcanais.com/espn4
-https://embedcanais.com/espn5
-https://embedcanais.com/espn6
-https://embedcanais.com/estreladacasa1
-https://embedcanais.com/estreladacasa2
-https://embedcanais.com/estreladacasa3
-https://embedcanais.com/estreladacasa4
-https://embedcanais.com/estreladacasa5
-https://embedcanais.com/foodnetwork
-https://embedcanais.com/globodf
-https://embedcanais.com/globomg
-https://embedcanais.com/globonews
-https://embedcanais.com/globoplaynovelas
-https://embedcanais.com/globorj
-https://embedcanais.com/globors
-https://embedcanais.com/globosp
-https://embedcanais.com/gloob
-https://embedcanais.com/gloobinho
-https://embedcanais.com/gnt
-https://embedcanais.com/hbo
-https://embedcanais.com/hbo2
-https://embedcanais.com/hbofamily
-https://embedcanais.com/hbomundi
-https://embedcanais.com/hboplus
-https://embedcanais.com/hbopop
-https://embedcanais.com/hbosignature
-https://embedcanais.com/hboxtreme
-https://embedcanais.com/hgtv
-https://embedcanais.com/history
-https://embedcanais.com/history2
-https://embedcanais.com/jovempannews
-https://embedcanais.com/lifetime
-https://embedcanais.com/max
-https://embedcanais.com/megapix
-https://embedcanais.com/mtv
-https://embedcanais.com/multishow
-https://embedcanais.com/nickelodeon
-https://embedcanais.com/nickjr
-https://embedcanais.com/nossofutebol
-https://embedcanais.com/novotempo
-https://embedcanais.com/paieterno
-https://embedcanais.com/paramountnetwork
-https://embedcanais.com/premiere
-https://embedcanais.com/premiere2
-https://embedcanais.com/premiere3
-https://embedcanais.com/premiere4
-https://embedcanais.com/premiere5
-https://embedcanais.com/premiere6
-https://embedcanais.com/premiere7
-https://embedcanais.com/premiere8
-https://embedcanais.com/recordmg
-https://embedcanais.com/recordnews
-https://embedcanais.com/recordrj
-https://embedcanais.com/recordsp
-https://embedcanais.com/redegospel
-https://embedcanais.com/redevida
-https://embedcanais.com/redetv
-https://embedcanais.com/sbtsp
-https://embedcanais.com/sonychannel
-https://embedcanais.com/space
-https://embedcanais.com/sportv
-https://embedcanais.com/sportv2
-https://embedcanais.com/sportv3
-https://embedcanais.com/studiouniversal
-https://embedcanais.com/tcaction
-https://embedcanais.com/tccult
-https://embedcanais.com/tcfun
-https://embedcanais.com/tcpipoca
-https://embedcanais.com/tcpremium
-https://embedcanais.com/tctouch
-https://embedcanais.com/tnt
-https://embedcanais.com/tntnovelas
-https://embedcanais.com/tntseries
-https://embedcanais.com/tooncast
-https://embedcanais.com/tvaparecida
-https://embedcanais.com/tvcultura
-https://embedcanais.com/tvevangelizar
-https://embedcanais.com/ufcfightpass
-https://embedcanais.com/universaltv
-https://embedcanais.com/warner
-https://embedcanais.com/amazonprimevideo
-https://embedcanais.com/nsports
-https://embedcanais.com/xsports
-    `;
-
-    const icons = {
-        "⚽ ESPORTES": "⚽",
-        "🎬 FILMES E SÉRIES": "🍿",
-        "📺 VARIEDADES E ABERTOS": "🎥",
-        "🧒 KIDS": "🎈",
-        "🌐 OUTROS": "🌐"
+    // LISTA ORIGINAL EMBEDCANAIS
+    const embedCanais = {
+        "⚽ ESPORTES": ["bandsp", "bandsports", "canalgoat", "cazetv", "combate", "dazn", "espn", "espn2", "espn3", "espn4", "espn5", "espn6", "nossofutebol", "premiere", "premiere2", "premiere3", "premiere4", "premiere5", "premiere6", "premiere7", "premiere8", "sportv", "sportv2", "sportv3", "ufcfightpass", "nsports", "xsports"],
+        "🎬 FILMES E SÉRIES": ["amc", "axn", "cinemax", "hbo", "hbo2", "hbofamily", "hbomundi", "hboplus", "hbopop", "hbosignature", "hboxtreme", "max", "megapix", "paramountnetwork", "sonychannel", "space", "studiouniversal", "tcaction", "tccult", "tcfun", "tcpipoca", "tcpremium", "tctouch", "tnt", "tntnovelas", "tntseries", "universaltv", "warner", "aee", "lifetime"],
+        "📺 VARIEDADES E ABERTOS": ["adultswim", "animalplanet", "bandnews", "cancaonova", "cnnbrasil", "comedycentral", "discoverychannel", "discoveryhh", "discoveryid", "discoverykids", "discoveryscience", "discoverytheater", "discoveryturbo", "discoveryworld", "disneyplus", "estreladacasa1", "estreladacasa2", "estreladacasa3", "estreladacasa4", "estreladacasa5", "foodnetwork", "globodf", "globomg", "globonews", "globoplaynovelas", "globorj", "globors", "globosp", "gloob", "gloobinho", "gnt", "hgtv", "history", "history2", "jovempannews", "mtv", "multishow", "nickelodeon", "nickjr", "novotempo", "paieterno", "recordmg", "recordnews", "recordrj", "recordsp", "redegospel", "redevida", "redetv", "sbtsp", "tvaparecida", "tvcultura", "tvevangelizar", "amazonprimevideo"],
+        "🧒 KIDS": ["cartoonito", "cartoonnetwork", "tooncast"]
     };
+
+    const icons = { "⚽ ESPORTES": "⚽", "🎬 FILMES E SÉRIES": "🍿", "📺 VARIEDADES E ABERTOS": "🎥", "🧒 KIDS": "🎈" };
 
     const container = document.getElementById('categorias-container');
 
-    // --- FUNÇÃO PARA CRIAR CARDS ---
-    function createCard(name, url, icon) {
+    // Função para renderizar
+    function render() {
+        // Unir as chaves das categorias
+        const categorias = [...new Set([...Object.keys(redecanais), ...Object.keys(embedCanais)])];
+
+        categorias.forEach(cat => {
+            const section = document.createElement('div');
+            section.className = 'cat-section';
+            section.innerHTML = `<div class="cat-title">${cat}</div><div class="grid"></div>`;
+            const grid = section.querySelector('.grid');
+
+            // 1. Adicionar canais da RedeCanais
+            if(redecanais[cat]) {
+                redecanais[cat].forEach(canal => {
+                    grid.appendChild(createCard(canal, urlRedecanais + canal, icons[cat], "REDE"));
+                });
+            }
+
+            // 2. Adicionar canais do EmbedCanais
+            if(embedCanais[cat]) {
+                embedCanais[cat].forEach(canal => {
+                    grid.appendChild(createCard(canal, urlEmbed + canal + "/", icons[cat], "EMBED"));
+                });
+            }
+
+            container.appendChild(section);
+        });
+    }
+
+    function createCard(name, url, icon, source) {
         const card = document.createElement('a');
         card.className = 'card';
         card.href = url;
         card.target = "_self";
         
-        let formattedName = name.toUpperCase().replace(/[-_]/g, ' ');
-        if(formattedName.includes('HBOMAX')) formattedName = formattedName.replace('HBOMAX', 'HBO MAX ');
-        if(formattedName.includes('PRIMEVIDEO')) formattedName = formattedName.replace('PRIMEVIDEO', 'PRIME VIDEO ');
-        if(formattedName.includes('DISNEYPLUS')) formattedName = formattedName.replace('DISNEYPLUS', 'DISNEY+ ');
-        if(formattedName.includes('PARAMOUNTPLUS')) formattedName = formattedName.replace('PARAMOUNTPLUS', 'PARAMOUNT+ ');
-
-        card.innerHTML = `<div class="icon-circle">${icon}</div><span class="name">${formattedName}</span>`;
+        let cleanName = name.toUpperCase().replace(/[-_]/g, ' ');
+        
+        card.innerHTML = `
+            <div class="icon-circle">${icon}</div>
+            <span class="name">${cleanName}</span>
+            <span class="source-tag">${source}</span>
+        `;
         return card;
     }
 
-    // --- RENDERIZAÇÃO ---
-    
-    // 1. Renderizar Canais RedeCanais
-    for (const [categoria, lista] of Object.entries(redecanaisData)) {
-        const section = document.createElement('div');
-        section.className = 'cat-section';
-        section.id = categoria.replace(/\s/g, '');
-        section.innerHTML = `<div class="cat-title"><i>${icons[categoria]}</i> ${categoria}</div><div class="grid"></div>`;
-        container.appendChild(section);
-
-        lista.forEach(canal => {
-            const fullUrl = baseUrl + canal;
-            section.querySelector('.grid').appendChild(createCard(canal, fullUrl, icons[categoria]));
-        });
-    }
-
-    // 2. Renderizar Links Diretos (Misturando nas categorias ou criando 'Outros')
-    const directLinks = rawLinks.trim().split('\n').map(l => l.trim()).filter(l => l !== '');
-    
-    const extraSection = document.createElement('div');
-    extraSection.className = 'cat-section';
-    extraSection.innerHTML = `<div class="cat-title"><i>${icons["🌐 OUTROS"]}</i> MAIS CANAIS VIP</div><div class="grid"></div>`;
-    container.appendChild(extraSection);
-
-    directLinks.forEach(url => {
-        let name = "";
-        try {
-            const urlObj = new URL(url);
-            name = urlObj.searchParams.has("stream") ? urlObj.searchParams.get("stream") : urlObj.pathname.split('/').pop();
-        } catch(e) { name = "CANAL"; }
-
-        // Tentar encaixar na categoria correta pelo nome
-        let categoryIcon = "📺";
-        let targetGrid = extraSection.querySelector('.grid');
-
-        if (name.match(/espn|sportv|premiere|dazn|ufc|futebol|sports/i)) targetGrid = document.getElementById('⚽ESPORTES').querySelector('.grid');
-        else if (name.match(/hbo|telecine|tc|megapix|warner|tnt|filme|max/i)) targetGrid = document.getElementById('🎬FILMESE SÉRIES').querySelector('.grid');
-        else if (name.match(/globo|sbt|record|band|discovery|history/i)) targetGrid = document.getElementById('📺VARIEDADESE ABERTOS').querySelector('.grid');
-        else if (name.match(/disney|nick|kids|gloob|cartoon/i)) targetGrid = document.getElementById('🧒KIDS').querySelector('.grid');
-
-        targetGrid.appendChild(createCard(name, url, categoryIcon));
-    });
-
-    // --- BUSCA ---
     function filtrar() {
-        const term = document.getElementById('search').value.toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-            const name = card.innerText.toLowerCase();
-            card.classList.toggle('hidden', !name.includes(term));
-        });
-        document.querySelectorAll('.cat-section').forEach(sec => {
-            const hasVisible = sec.querySelectorAll('.card:not(.hidden)').length > 0;
-            sec.style.display = hasVisible ? 'block' : 'none';
-        });
+        let input = document.getElementById('search').value.toLowerCase();
+        let cards = document.getElementsByClassName('card');
+        for (let card of cards) {
+            let name = card.querySelector('.name').innerText.toLowerCase();
+            card.classList.toggle('hidden', !name.includes(input));
+        }
     }
+
+    render();
 </script>
 
 </body>
